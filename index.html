@@ -9,11 +9,10 @@
   :root {
     --bg-main: #07090e;
     --bg-card: #121620;
-    --bg-card-hover: #1a202c;
     --border-color: #212838;
     --accent-blue: #3b82f6;
     --accent-gold: #f59e0b;
-    --accent-cyan: #06b6d4;
+    --accent-cyan: #38bdf8;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
   }
@@ -30,7 +29,7 @@
     text-align: center;
     margin-bottom: 30px;
   }
-  h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
+  h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; font-weight: 700; }
   #status { font-size: 0.95rem; color: var(--text-muted); background: rgba(255,255,255,0.03); display: inline-block; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); }
 
   .grid { 
@@ -133,7 +132,7 @@
     background: linear-gradient(135deg, #2563eb, #1d4ed8); 
     color: white; 
     text-decoration: none; 
-    padding: 8px; 
+    padding: 9px; 
     border-radius: 6px; 
     font-size: 13px; 
     font-weight: 600;
@@ -181,6 +180,10 @@ async function cargarSubastas() {
         ? nft.image 
         : 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png';
 
+      // Extraer ID o token numérico desde la URL original del NFT
+      const partesUrl = nft.url.split('/');
+      const nftId = partesUrl[partesUrl.length - 1] || nft.id;
+
       card.innerHTML = `
         <div>
           <div class="image-container">
@@ -195,7 +198,7 @@ async function cargarSubastas() {
         </div>
         <div class="card-footer">
           <div class="price">💎 ${nft.price}</div>
-          <a class="btn" href="${nft.url}" target="_blank">Ver Ficha en HofGamer</a>
+          <a class="btn" href="detalle.html?id=${nftId}&url=${encodeURIComponent(nft.url)}">Ver Mi Ficha Online</a>
         </div>
       `;
       grid.appendChild(card);
