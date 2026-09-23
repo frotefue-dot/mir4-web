@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIR4 NFT Search</title>
+<style>
+  body { background-color: #0b0d12; color: #fff; font-family: sans-serif; padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+  .card { background: #161922; border: 1px solid #282c3c; border-radius: 8px; padding: 12px; }
+  .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
+  .title { font-weight: bold; color: #f59e0b; margin-top: 8px; }
+  .ps { color: #3b82f6; font-size: 13px; }
+  .price { font-weight: bold; color: #38bdf8; margin-top: 6px; }
+  .btn { display: block; text-align: center; background: #2563eb; color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>⚔️ MIR4 Subastas en Tiempo Real</h1>
+<div id="status">⏳ Cargando datos desde tu servidor...</div>
+<div id="grid" class="grid"></div>
+
+<script>
+// Pega aquí el enlace que obtuviste en el Paso 3 (Render)
+const URL_DE_TU_SERVIDOR = "https://mir4-backend.onrender.com";
+
+async function cargarSubastas() {
+  const status = document.getElementById('status');
+  const grid = document.getElementById('grid');
+
+  try {
+    const res = await fetch(URL_DE_TU_SERVIDOR);
+    const data = await res.json();
+    
+    status.innerText = `✅ ${data.total} personajes disponibles en subasta.`;
+    grid.innerHTML = "";
+
+    data.items.forEach(nft => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="https://file.xdraco.com/nft/character/${nft.class}.png" onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
+        <div class="title">${nft.characterName} (Lv.${nft.lvl})</div>
+        <div class="ps">⚡ ${(nft.powerScore || 0).toLocaleString()} PS</div>
+        <div class="price">💎 ${nft.price} WEMIX</div>
+        <a class="btn" href="https://www.xdraco.com/nft/trade/${nft.seq}" target="_blank">Ver Ficha</a>
+      `;
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    status.innerText = "❌ El servidor está iniciando. Espera 1 minuto y recarga la página.";
+  }
+}
+
+cargarSubastas();
+</script>
+</body>
+</html>
