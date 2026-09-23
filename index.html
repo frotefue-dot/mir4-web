@@ -3,24 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIR4 NFT Search</title>
+<title>MIR4 NFT Marketplace Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  body { background-color: #0b0d12; color: #fff; font-family: sans-serif; padding: 20px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-  .card { background: #161922; border: 1px solid #282c3c; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
-  .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; background: #0f1117; }
-  .title { font-weight: bold; color: #f59e0b; margin-top: 8px; font-size: 14px; }
-  .sub-info { color: #9ca3af; font-size: 12px; margin-top: 4px; }
-  .ps { color: #3b82f6; font-size: 13px; font-weight: bold; margin-top: 4px; }
-  .price { font-weight: bold; color: #38bdf8; margin-top: 6px; font-size: 14px; }
-  .btn { display: block; text-align: center; background: #2563eb; color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 8px; font-size: 12px; }
-  .btn:hover { background: #1d4ed8; }
+  :root {
+    --bg-main: #07090e;
+    --bg-card: #121620;
+    --bg-card-hover: #1a202c;
+    --border-color: #212838;
+    --accent-blue: #3b82f6;
+    --accent-gold: #f59e0b;
+    --accent-cyan: #06b6d4;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { 
+    background-color: var(--bg-main); 
+    color: var(--text-main); 
+    font-family: 'Outfit', sans-serif; 
+    padding: 30px 20px; 
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
+  #status { font-size: 0.95rem; color: var(--text-muted); background: rgba(255,255,255,0.03); display: inline-block; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); }
+
+  .grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+    gap: 20px; 
+    max-width: 1400px;
+    margin: 0 auto; 
+  }
+
+  .card { 
+    background: var(--bg-card); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    overflow: hidden;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-blue);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background: #0d1117;
+  }
+
+  .card img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+  }
+
+  .badge-level {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    color: var(--accent-gold);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .card-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .title { 
+    font-weight: 600; 
+    color: #fff; 
+    font-size: 15px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .class-name {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ps { 
+    color: var(--accent-blue); 
+    font-size: 13px; 
+    font-weight: 600; 
+  }
+
+  .card-footer {
+    padding: 0 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .price { 
+    font-weight: 700; 
+    color: var(--accent-cyan); 
+    font-size: 15px; 
+  }
+
+  .btn { 
+    display: block; 
+    text-align: center; 
+    background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+    color: white; 
+    text-decoration: none; 
+    padding: 8px; 
+    border-radius: 6px; 
+    font-size: 13px; 
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover { 
+    opacity: 0.9; 
+  }
 </style>
 </head>
 <body>
 
-<h1>⚔️ MIR4 Subastas en Tiempo Real</h1>
-<div id="status">⏳ Cargando datos desde tu servidor...</div>
+<header>
+  <h1>⚔️ MIR4 Subastas en Tiempo Real</h1>
+  <div id="status">⏳ Conectando con el servidor...</div>
+</header>
+
 <div id="grid" class="grid"></div>
 
 <script>
@@ -34,7 +165,7 @@ async function cargarSubastas() {
     const res = await fetch(URL_DE_TU_SERVIDOR);
     const data = await res.json();
     
-    status.innerText = `✅ ${data.total} personajes disponibles en subasta. (${data.diagnostico})`;
+    status.innerText = `✅ ${data.total} personajes encontrados en el mercado.`;
     grid.innerHTML = "";
 
     if (!data.items || data.items.length === 0) {
@@ -46,27 +177,31 @@ async function cargarSubastas() {
       const card = document.createElement('div');
       card.className = 'card';
       
-      // Imagen por defecto si viene vacía
       const imagenNft = nft.image && nft.image.startsWith('http') 
         ? nft.image 
         : 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png';
 
       card.innerHTML = `
         <div>
-          <img src="${imagenNft}" alt="${nft.name}" onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
-          <div class="title">${nft.name}</div>
-          <div class="sub-info">Clase: <b>${nft.class}</b> | ${nft.level}</div>
-          <div class="ps">⚡ ${nft.power}</div>
+          <div class="image-container">
+            <span class="badge-level">${nft.level}</span>
+            <img src="${imagenNft}" alt="${nft.name}" onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
+          </div>
+          <div class="card-body">
+            <div class="class-name">${nft.class}</div>
+            <div class="title" title="${nft.name}">${nft.name}</div>
+            <div class="ps">⚡ ${nft.power}</div>
+          </div>
         </div>
-        <div>
+        <div class="card-footer">
           <div class="price">💎 ${nft.price}</div>
-          <a class="btn" href="${nft.url}" target="_blank">Ver Ficha</a>
+          <a class="btn" href="${nft.url}" target="_blank">Ver Ficha en HofGamer</a>
         </div>
       `;
       grid.appendChild(card);
     });
   } catch (err) {
-    status.innerText = "❌ El servidor está iniciando o hubo un error de conexión. Espera 1 minuto y recarga la página.";
+    status.innerText = "❌ El servidor está iniciando (Render duerme los servicios gratis). Espera 1 minuto y recarga.";
     console.error(err);
   }
 }
