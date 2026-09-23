@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inspección Avanzada de Ítems Trade - MIR4 Pro</title>
+<title>Inspección de Inventario e Ítems Trade - MIR4</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-main: #07090e;
-    --bg-card: #0e131f;
-    --bg-card-hover: #151d2e;
-    --border-color: #1e293b;
+    --bg-main: #0b0f19;
+    --bg-card: #131b2e;
+    --bg-slot: #090d16;
+    --border-color: #22304a;
     --accent-blue: #3b82f6;
     --accent-gold: #f59e0b;
     --accent-cyan: #06b6d4;
-    --accent-purple: #8b5cf6;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
   }
@@ -27,165 +26,132 @@
     padding: 20px;
   }
 
-  .wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .wrapper { max-width: 1000px; margin: 0 auto; }
 
   nav {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    padding: 16px 24px;
-    border-radius: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-
-  .back-btn {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-main);
-    padding: 9px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
-  }
-
-  .back-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue); color: var(--accent-blue); }
-
-  .hero-panel {
-    background: linear-gradient(135deg, #0e131f 0%, #111827 100%);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 30px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    margin-bottom: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  @media (max-width: 768px) {
-    .hero-panel { grid-template-columns: 1fr; }
-  }
-
-  .hero-info h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-  .hero-info .server-tag {
-    display: inline-block;
-    background: rgba(6, 182, 212, 0.1);
-    color: var(--accent-cyan);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    margin-bottom: 15px;
-  }
-
-  .stats-grid-mini {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 15px;
-  }
-
-  .stat-box {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--border-color);
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-  }
-
-  .stat-box .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat-box .value { font-size: 16px; font-weight: 700; color: #fff; margin-top: 4px; }
-
-  .hero-price-box {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid var(--border-color);
+    padding: 15px 25px;
     border-radius: 12px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 12px;
-  }
-
-  .hero-price-box .price-label { font-size: 12px; color: var(--text-muted); }
-  .hero-price-box .price-value { font-size: 32px; font-weight: 700; color: var(--accent-gold); }
-
-  .btn-external {
-    width: 100%;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: opacity 0.2s, transform 0.2s;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-  }
-  .btn-external:hover { opacity: 0.9; transform: translateY(-1px); }
-
-  /* SECCION DE ITEMS TRADE */
-  .section-container {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 25px;
-  }
-
-  .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 12px;
   }
 
-  .section-header h3 { font-size: 18px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
-  .badge-counter { background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); font-size: 12px; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2); }
-
-  .trade-items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-  }
-
-  .trade-item-card {
-    background: var(--bg-card-hover);
+  .back-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
     transition: all 0.2s;
   }
+  .back-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue); }
 
-  .trade-item-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+  .profile-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-  .item-header-row { display: flex; justify-content: space-between; align-items: center; }
-  .item-rarity { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
-  .rarity-epic { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
-  .rarity-rare { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-  .rarity-legendary { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .profile-info h1 { font-size: 24px; color: #fff; margin-bottom: 5px; }
+  .profile-meta { font-size: 14px; color: var(--text-muted); display: flex; gap: 15px; }
 
-  .item-name-trade { font-size: 14px; font-weight: 600; color: #fff; }
-  .item-amount { font-size: 13px; color: var(--accent-cyan); font-weight: 700; }
+  .profile-price { text-align: right; }
+  .profile-price .val { font-size: 26px; font-weight: 700; color: var(--accent-gold); }
 
-  .loading-state { text-align: center; padding: 50px; color: var(--text-muted); font-size: 15px; }
+  /* ESTILO DE INVENTARIO IDÉNTICO A HOFGAMER / XDRACO */
+  .inventory-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+  }
+
+  .grid-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 10px;
+  }
+
+  .slot {
+    background: var(--bg-slot);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    height: 105px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .slot:hover { border-color: var(--accent-blue); }
+
+  /* Insignia "T" de Tradeable idéntica a la oficial */
+  .trade-badge-t {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: #1e3a8a;
+    color: #93c5fd;
+    font-size: 10px;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 1px solid #3b82f6;
+  }
+
+  .slot img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    margin-top: 10px;
+  }
+
+  .slot-name {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .slot-amount {
+    font-size: 10px;
+    color: var(--accent-cyan);
+    font-weight: 700;
+  }
+
+  .loading { text-align: center; padding: 40px; color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -193,11 +159,11 @@
 <div class="wrapper">
   <nav>
     <a href="index.html" class="back-btn">← Volver al Marketplace</a>
-    <span style="font-size: 13px; color: var(--text-muted);">ID de Inspección: <strong id="nav-id" style="color:#fff;">Cargando...</strong></span>
+    <span style="font-size: 13px; color: var(--text-muted);">Inspección Interactiva de Cartera NFT</span>
   </nav>
 
   <div id="app-container">
-    <div class="loading-state">Cargando datos y registros analíticos del NFT...</div>
+    <div class="loading">Sincronizando datos de inventario y objetos trade...</div>
   </div>
 </div>
 
@@ -206,9 +172,8 @@
   const nftId = params.get('id');
   const URL_API = "https://mir4-backend.onrender.com/api/nfts";
 
-  async function initInspector() {
+  async function cargarInventarioNft() {
     const container = document.getElementById('app-container');
-    document.getElementById('nav-id').innerText = nftId || 'Desconocido';
 
     try {
       const response = await fetch(URL_API);
@@ -216,93 +181,80 @@
       const nft = data.items.find(item => item.id == nftId || item.url.includes(nftId));
 
       if (!nft) {
-        container.innerHTML = `<div class="loading-state" style="color: #ef4444;">No se encontró información activa para el registro #${nftId}.</div>`;
+        container.innerHTML = `<div class="loading" style="color: #ef4444;">No se encontró el personaje #${nftId} en el sistema.</div>`;
         return;
       }
 
-      // Renderizado de la interfaz profesional avanzada
       container.innerHTML = `
-        <div class="hero-panel">
-          <div class="hero-info">
-            <span class="server-tag">Servidor Oficial MIR4 • Verificado</span>
+        <div class="profile-header">
+          <div class="profile-info">
             <h1>${nft.name}</h1>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">Clase principal orientada al combate y control de territorio en blockchain.</p>
-            
-            <div class="stats-grid-mini">
-              <div class="stat-box">
-                <div class="label">Nivel</div>
-                <div class="value">${nft.level}</div>
-              </div>
-              <div class="stat-box">
-                <div class="label">Poder (PS)</div>
-                <div class="value">${nft.power}</div>
-              </div>
-              <div class="stat-box">
-                <div class="label">Clase</div>
-                <div class="value" style="font-size: 14px; color: var(--accent-cyan);">${nft.class}</div>
-              </div>
+            <div class="profile-meta">
+              <span>Clase: <strong style="color:#fff">${nft.class}</strong></span>
+              <span>Nivel: <strong style="color:#fff">${nft.level}</strong></span>
+              <span>Poder: <strong style="color:var(--accent-cyan)">${nft.power}</strong></span>
             </div>
           </div>
-
-          <div class="hero-price-box">
-            <div class="price-label">Valor de Mercado Actual</div>
-            <div class="price-value">💎 ${nft.price}</div>
-            <a href="${nft.url}" target="_blank" class="btn-external">Abrir en XDRACO ↗</a>
+          <div class="profile-price">
+            <div style="font-size:11px; color:var(--text-muted);">PRECIO DE VENTA</div>
+            <div class="val">💎 ${nft.price}</div>
           </div>
         </div>
 
-        <div class="section-container">
-          <div class="section-header">
-            <h3>📦 Inventario y Almacén de Ítems Trade</h3>
-            <span class="badge-counter">4 Objetos Sellados Detectados</span>
+        <div class="inventory-section">
+          <div class="section-title">
+            <span>📦 Inventario y Almacén (Ítems Tradeables con Marca T)</span>
           </div>
           
-          <div class="trade-items-grid">
-            <div class="trade-item-card">
-              <div class="item-header-row">
-                <span class="item-rarity rarity-epic">Épico</span>
-                <span style="font-size: 11px; color: var(--text-muted);">Trade</span>
-              </div>
-              <div class="item-name-trade">Acero Oscuro Sellado</div>
-              <div class="item-amount">150,000 U.</div>
+          <div class="grid-slots">
+            <!-- Slot 1: Objeto con marca T -->
+            <div class="slot">
+              <div class="trade-badge-t" title="Tradeable">T</div>
+              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+              <div class="slot-name">Acero Oscuro</div>
+              <div class="slot-amount">100,000</div>
             </div>
 
-            <div class="trade-item-card">
-              <div class="item-header-row">
-                <span class="item-rarity rarity-rare">Raro</span>
-                <span style="font-size: 11px; color: var(--text-muted);">Trade</span>
-              </div>
-              <div class="item-name-trade">Piedra Mágica de Vigor</div>
-              <div class="item-amount">Nivel +3</div>
+            <!-- Slot 2: Objeto con marca T -->
+            <div class="slot">
+              <div class="trade-badge-t" title="Tradeable">T</div>
+              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+              <div class="slot-name">Piedra Mágica</div>
+              <div class="slot-amount">+3 Raro</div>
             </div>
 
-            <div class="trade-item-card">
-              <div class="item-header-row">
-                <span class="item-rarity rarity-epic">Épico</span>
-                <span style="font-size: 11px; color: var(--text-muted);">Trade</span>
-              </div>
-              <div class="item-name-trade">Piedra de Creación</div>
-              <div class="item-amount">2 Unidades</div>
+            <!-- Slot 3: Objeto con marca T -->
+            <div class="slot">
+              <div class="trade-badge-t" title="Tradeable">T</div>
+              <div style="position: absolute; top:6px; right:6px; font-size:9px; background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px;">Sellado</div>
+              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+              <div class="slot-name">Energía</div>
+              <div class="slot-amount">50 U.</div>
             </div>
 
-            <div class="trade-item-card">
-              <div class="item-header-row">
-                <span class="item-rarity rarity-legendary">Legendario</span>
-                <span style="font-size: 11px; color: var(--text-muted);">Trade</span>
-              </div>
-              <div class="item-name-trade">Códice de Esfuerzo</div>
-              <div class="item-amount">1 Unidad</div>
+            <!-- Slot 4: Espacio vacío de inventario -->
+            <div class="slot" style="opacity: 0.3; justify-content: center;">
+              <span style="font-size: 11px; color: var(--text-muted);">Vacío</span>
             </div>
+            
+            <!-- Slot 5: Espacio vacío de inventario -->
+            <div class="slot" style="opacity: 0.3; justify-content: center;">
+              <span style="font-size: 11px; color: var(--text-muted);">Vacío</span>
+            </div>
+          </div>
+          
+          <div style="margin-top: 20px; text-align: right;">
+            <a href="${nft.url}" target="_blank" style="background: var(--accent-blue); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">Ver Registro Completo en XDRACO ↗</a>
           </div>
         </div>
       `;
     } catch (err) {
       console.error(err);
-      container.innerHTML = `<div class="loading-state" style="color: #ef4444;">Error al sincronizar con el backend de datos.</div>`;
+      container.innerHTML = `<div class="loading" style="color: #ef4444;">Error al cargar los datos del servidor.</div>`;
     }
   }
 
-  initInspector();
+  cargarInventarioNft();
 </script>
 
 </body>
