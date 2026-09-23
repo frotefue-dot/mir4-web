@@ -7,12 +7,14 @@
 <style>
   body { background-color: #0b0d12; color: #fff; font-family: sans-serif; padding: 20px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-  .card { background: #161922; border: 1px solid #282c3c; border-radius: 8px; padding: 12px; }
-  .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
-  .title { font-weight: bold; color: #f59e0b; margin-top: 8px; }
-  .ps { color: #3b82f6; font-size: 13px; }
-  .price { font-weight: bold; color: #38bdf8; margin-top: 6px; }
+  .card { background: #161922; border: 1px solid #282c3c; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+  .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; background: #0f1117; }
+  .title { font-weight: bold; color: #f59e0b; margin-top: 8px; font-size: 14px; }
+  .sub-info { color: #9ca3af; font-size: 12px; margin-top: 4px; }
+  .ps { color: #3b82f6; font-size: 13px; font-weight: bold; margin-top: 4px; }
+  .price { font-weight: bold; color: #38bdf8; margin-top: 6px; font-size: 14px; }
   .btn { display: block; text-align: center; background: #2563eb; color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 8px; font-size: 12px; }
+  .btn:hover { background: #1d4ed8; }
 </style>
 </head>
 <body>
@@ -22,7 +24,6 @@
 <div id="grid" class="grid"></div>
 
 <script>
-// Pega aquí el enlace que obtuviste en el Paso 3 (Render)
 const URL_DE_TU_SERVIDOR = "https://mir4-backend.onrender.com/api/nfts";
 
 async function cargarSubastas() {
@@ -33,23 +34,40 @@ async function cargarSubastas() {
     const res = await fetch(URL_DE_TU_SERVIDOR);
     const data = await res.json();
     
-    status.innerText = `✅ ${data.total} personajes disponibles en subasta.`;
+    status.innerText = `✅ ${data.total} personajes disponibles en subasta. (${data.diagnostico})`;
     grid.innerHTML = "";
+
+    if (!data.items || data.items.length === 0) {
+      status.innerText = "⚠️ No hay personajes disponibles en este momento.";
+      return;
+    }
 
     data.items.forEach(nft => {
       const card = document.createElement('div');
       card.className = 'card';
+      
+      // Imagen por defecto si viene vacía
+      const imagenNft = nft.image && nft.image.startsWith('http') 
+        ? nft.image 
+        : 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png';
+
       card.innerHTML = `
-        <img src="https://file.xdraco.com/nft/character/${nft.class}.png" onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
-        <div class="title">${nft.characterName} (Lv.${nft.lvl})</div>
-        <div class="ps">⚡ ${(nft.powerScore || 0).toLocaleString()} PS</div>
-        <div class="price">💎 ${nft.price} WEMIX</div>
-        <a class="btn" href="https://www.xdraco.com/nft/trade/${nft.seq}" target="_blank">Ver Ficha</a>
+        <div>
+          <img src="${imagenNft}" alt="${nft.name}" onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
+          <div class="title">${nft.name}</div>
+          <div class="sub-info">Clase: <b>${nft.class}</b> | ${nft.level}</div>
+          <div class="ps">⚡ ${nft.power}</div>
+        </div>
+        <div>
+          <div class="price">💎 ${nft.price}</div>
+          <a class="btn" href="${nft.url}" target="_blank">Ver Ficha</a>
+        </div>
       `;
       grid.appendChild(card);
     });
   } catch (err) {
-    status.innerText = "❌ El servidor está iniciando. Espera 1 minuto y recarga la página.";
+    status.innerText = "❌ El servidor está iniciando o hubo un error de conexión. Espera 1 minuto y recarga la página.";
+    console.error(err);
   }
 }
 
