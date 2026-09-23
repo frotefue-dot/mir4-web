@@ -3,168 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inspección de Inventario e Ítems Trade - MIR4</title>
+<title>Inspección Oficial NFT - MIR4</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-main: #0b0f19;
-    --bg-card: #131b2e;
-    --bg-slot: #090d16;
-    --border-color: #22304a;
+    --bg-main: #07090e;
+    --bg-card: #0d111a;
+    --bg-slot: #121824;
+    --border-color: #212c42;
     --accent-blue: #3b82f6;
     --accent-gold: #f59e0b;
     --accent-cyan: #06b6d4;
+    --rarity-legendary: #f59e0b;
+    --rarity-epic: #a855f7;
+    --rarity-rare: #3b82f6;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { 
-    background-color: var(--bg-main); 
-    color: var(--text-main); 
-    font-family: 'Outfit', sans-serif; 
-    padding: 20px;
-  }
+  body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Outfit', sans-serif; padding: 15px; }
 
-  .wrapper { max-width: 1000px; margin: 0 auto; }
+  .wrapper { max-width: 1200px; margin: 0 auto; }
 
-  nav {
+  /* CABECERA PRINCIPAL */
+  .top-nav-back { margin-bottom: 15px; }
+  .back-link { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; }
+  .back-link:hover { color: #fff; }
+
+  .header-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    padding: 15px 25px;
     border-radius: 12px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
-  .back-btn {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-main);
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
+  .char-main-info { display: flex; align-items: center; gap: 20px; }
+  .char-avatar { width: 70px; height: 70px; background: #1a2234; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .char-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .char-details h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .char-sub { display: flex; gap: 15px; font-size: 13px; color: var(--text-muted); }
+  .char-sub span strong { color: #fff; }
+  .char-sub span.lvl { color: #ef4444; }
+
+  .char-price-box { text-align: right; }
+  .price-val { font-size: 28px; font-weight: 700; color: var(--accent-gold); }
+  .price-usd { font-size: 12px; color: var(--text-muted); }
+
+  /* BARRA DE PESTAÑAS (TABS) */
+  .tabs-bar {
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 8px 15px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
     transition: all 0.2s;
   }
-  .back-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue); }
 
-  .profile-header {
+  .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
+  .tab-btn.active { background: #1e293b; color: #fff; border: 1px solid var(--border-color); }
+
+  /* CONTENEDOR DE SECCIONES */
+  .section-content { display: none; }
+  .section-content.active { display: block; }
+
+  .inventory-panel {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-radius: 12px;
+    padding: 20px;
     margin-bottom: 20px;
   }
 
-  .profile-info h1 { font-size: 24px; color: #fff; margin-bottom: 5px; }
-  .profile-meta { font-size: 14px; color: var(--text-muted); display: flex; gap: 15px; }
+  .panel-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  .profile-price { text-align: right; }
-  .profile-price .val { font-size: 26px; font-weight: 700; color: var(--accent-gold); }
-
-  /* ESTILO DE INVENTARIO IDÉNTICO A HOFGAMER / XDRACO */
-  .inventory-section {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 24px;
-  }
-
-  .section-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-  }
-
-  .grid-slots {
+  /* CUADRÍCULAS DE ÍTEMS EXACTAS */
+  .gear-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
   }
 
-  .slot {
+  .gear-slot {
     background: var(--bg-slot);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    height: 105px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 8px;
     position: relative;
-    transition: border-color 0.2s;
+    height: 110px;
+    justify-content: space-between;
   }
 
-  .slot:hover { border-color: var(--accent-blue); }
+  /* Rareza de bordes estilo HofGamer */
+  .gear-slot.legendary { border-color: var(--rarity-legendary); box-shadow: inset 0 0 8px rgba(245, 158, 11, 0.15); }
+  .gear-slot.epic { border-color: var(--rarity-epic); box-shadow: inset 0 0 8px rgba(168, 85, 247, 0.15); }
+  .gear-slot.rare { border-color: var(--rarity-rare); box-shadow: inset 0 0 8px rgba(59, 130, 246, 0.15); }
 
-  /* Insignia "T" de Tradeable idéntica a la oficial */
-  .trade-badge-t {
+  .slot-badge-top {
     position: absolute;
     top: 6px;
     left: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.5);
+  }
+  .legendary .slot-badge-top { color: var(--rarity-legendary); }
+  .epic .slot-badge-top { color: var(--rarity-epic); }
+  .rare .slot-badge-top { color: var(--rarity-rare); }
+
+  /* Marca T de Trade */
+  .trade-t {
+    position: absolute;
+    top: 6px;
+    right: 6px;
     background: #1e3a8a;
     color: #93c5fd;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: 3px;
     border: 1px solid #3b82f6;
   }
 
-  .slot img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    margin-top: 10px;
-  }
+  .gear-slot img { width: 40px; height: 40px; object-fit: contain; margin-top: 10px; }
+  .gear-name { font-size: 11px; color: #fff; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+  .gear-enhance { font-size: 10px; color: var(--accent-gold); font-weight: 700; }
 
-  .slot-name {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-  }
-
-  .slot-amount {
-    font-size: 10px;
-    color: var(--accent-cyan);
-    font-weight: 700;
-  }
-
-  .loading { text-align: center; padding: 40px; color: var(--text-muted); }
+  .loading { text-align: center; padding: 50px; color: var(--text-muted); }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
-  <nav>
-    <a href="index.html" class="back-btn">← Volver al Marketplace</a>
-    <span style="font-size: 13px; color: var(--text-muted);">Inspección Interactiva de Cartera NFT</span>
-  </nav>
-
-  <div id="app-container">
-    <div class="loading">Sincronizando datos de inventario y objetos trade...</div>
+<div class="wrapper" id="app">
+  <div class="top-nav-back">
+    <a href="index.html" class="back-link">← Back to List</a>
   </div>
+  <div class="loading">Cargando interfaz de inspección de fichas...</div>
 </div>
 
 <script>
@@ -172,89 +175,144 @@
   const nftId = params.get('id');
   const URL_API = "https://mir4-backend.onrender.com/api/nfts";
 
-  async function cargarInventarioNft() {
-    const container = document.getElementById('app-container');
+  async function cargarInterfazHof() {
+    const app = document.getElementById('app');
 
     try {
-      const response = await fetch(URL_API);
-      const data = await response.json();
+      const res = await fetch(URL_API);
+      const data = await res.json();
       const nft = data.items.find(item => item.id == nftId || item.url.includes(nftId));
 
       if (!nft) {
-        container.innerHTML = `<div class="loading" style="color: #ef4444;">No se encontró el personaje #${nftId} en el sistema.</div>`;
+        app.innerHTML = `<div class="loading" style="color:#ef4444;">No se encontró el personaje ID #${nftId}</div>`;
         return;
       }
 
-      container.innerHTML = `
-        <div class="profile-header">
-          <div class="profile-info">
-            <h1>${nft.name}</h1>
-            <div class="profile-meta">
-              <span>Clase: <strong style="color:#fff">${nft.class}</strong></span>
-              <span>Nivel: <strong style="color:#fff">${nft.level}</strong></span>
-              <span>Poder: <strong style="color:var(--accent-cyan)">${nft.power}</strong></span>
+      app.innerHTML = `
+        <div class="top-nav-back">
+          <a href="index.html" class="back-link">← Back to List</a>
+        </div>
+
+        <!-- CABECERA PRINCIPAL TIPO HOFGAMER -->
+        <div class="header-card">
+          <div class="char-main-info">
+            <div class="char-avatar">
+              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Avatar">
+            </div>
+            <div class="char-details">
+              <h1>${nft.name}</h1>
+              <div class="char-sub">
+                <span class="lvl">Level ${nft.level}</span>
+                <span>Power: <strong>${nft.power}</strong></span>
+                <span>Server: <strong>${nft.class || 'ASIA'}</strong></span>
+              </div>
             </div>
           </div>
-          <div class="profile-price">
-            <div style="font-size:11px; color:var(--text-muted);">PRECIO DE VENTA</div>
-            <div class="val">💎 ${nft.price}</div>
+          <div class="char-price-box">
+            <div class="price-val">💎 ${nft.price}</div>
+            <div class="price-usd">~$1,398.98 USD</div>
           </div>
         </div>
 
-        <div class="inventory-section">
-          <div class="section-title">
-            <span>📦 Inventario y Almacén (Ítems Tradeables con Marca T)</span>
-          </div>
-          
-          <div class="grid-slots">
-            <!-- Slot 1: Objeto con marca T -->
-            <div class="slot">
-              <div class="trade-badge-t" title="Tradeable">T</div>
-              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-              <div class="slot-name">Acero Oscuro</div>
-              <div class="slot-amount">100,000</div>
-            </div>
+        <!-- BARRA DE PESTAÑAS INTERACTIVAS -->
+        <div class="tabs-bar">
+          <button class="tab-btn active" onclick="switchTab(event, 'tab-equipment')">Equipment</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-trade')">Trade Items 📦</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-spirit')">Spirit</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-magic')">Magic Stone</button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-skills')">Skills</button>
+        </div>
 
-            <!-- Slot 2: Objeto con marca T -->
-            <div class="slot">
-              <div class="trade-badge-t" title="Tradeable">T</div>
-              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-              <div class="slot-name">Piedra Mágica</div>
-              <div class="slot-amount">+3 Raro</div>
-            </div>
-
-            <!-- Slot 3: Objeto con marca T -->
-            <div class="slot">
-              <div class="trade-badge-t" title="Tradeable">T</div>
-              <div style="position: absolute; top:6px; right:6px; font-size:9px; background:rgba(255,255,255,0.05); padding:1px 4px; border-radius:3px;">Sellado</div>
-              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-              <div class="slot-name">Energía</div>
-              <div class="slot-amount">50 U.</div>
-            </div>
-
-            <!-- Slot 4: Espacio vacío de inventario -->
-            <div class="slot" style="opacity: 0.3; justify-content: center;">
-              <span style="font-size: 11px; color: var(--text-muted);">Vacío</span>
-            </div>
-            
-            <!-- Slot 5: Espacio vacío de inventario -->
-            <div class="slot" style="opacity: 0.3; justify-content: center;">
-              <span style="font-size: 11px; color: var(--text-muted);">Vacío</span>
+        <!-- PESTAÑA 1: EQUIPMENT -->
+        <div id="tab-equipment" class="section-content active">
+          <div class="inventory-panel">
+            <div class="panel-title">Equipped Gear (Equipamiento Activo)</div>
+            <div class="gear-grid">
+              <div class="gear-slot legendary">
+                <span class="slot-badge-top">Legendary</span>
+                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+                <div class="gear-name">Chaotic Cloth</div>
+                <div class="gear-enhance">+8</div>
+              </div>
+              <div class="gear-slot epic">
+                <span class="slot-badge-top">Epic</span>
+                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+                <div class="gear-name">Heavenly Neck</div>
+                <div class="gear-enhance">+7</div>
+              </div>
+              <div class="gear-slot rare">
+                <span class="slot-badge-top">Rare</span>
+                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+                <div class="gear-name">Demon Ring</div>
+                <div class="gear-enhance">+5</div>
+              </div>
             </div>
           </div>
-          
-          <div style="margin-top: 20px; text-align: right;">
-            <a href="${nft.url}" target="_blank" style="background: var(--accent-blue); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">Ver Registro Completo en XDRACO ↗</a>
+        </div>
+
+        <!-- PESTAÑA 2: TRADE ITEMS (CON MARCA T) -->
+        <div id="tab-trade" class="section-content">
+          <div class="inventory-panel">
+            <div class="panel-title">Ítems Tradeables en Cartera / Almacén (Con Sello T)</div>
+            <div class="gear-grid">
+              <div class="gear-slot legendary">
+                <div class="trade-t" title="Tradeable">T</div>
+                <span class="slot-badge-top">Legendary</span>
+                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+                <div class="gear-name">Darksteel Sellado</div>
+                <div class="gear-enhance" style="color:var(--accent-cyan);">150,000 U.</div>
+              </div>
+              <div class="gear-slot epic">
+                <div class="trade-t" title="Tradeable">T</div>
+                <span class="slot-badge-top">Epic</span>
+                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
+                <div class="gear-name">Piedra Mágica Vigor</div>
+                <div class="gear-enhance" style="color:var(--accent-cyan);">Nivel +3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 3: SPIRIT -->
+        <div id="tab-spirit" class="section-content">
+          <div class="inventory-panel">
+            <div class="panel-title">Espíritus Equipados</div>
+            <p style="color:var(--text-muted); font-size:13px;">Listado de espíritus épicos y legendarios vinculados al personaje.</p>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 4: MAGIC STONE -->
+        <div id="tab-magic" class="section-content">
+          <div class="inventory-panel">
+            <div class="panel-title">Piedras Mágicas y Orbes</div>
+            <p style="color:var(--text-muted); font-size:13px;">Configuración de ranuras y piedras equipadas.</p>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 5: SKILLS -->
+        <div id="tab-skills" class="section-content">
+          <div class="inventory-panel">
+            <div class="panel-title">Nivel de Habilidades (Skills)</div>
+            <p style="color:var(--text-muted); font-size:13px;">Maestrías y habilidades avanzadas desbloqueadas.</p>
           </div>
         </div>
       `;
-    } catch (err) {
-      console.error(err);
-      container.innerHTML = `<div class="loading" style="color: #ef4444;">Error al cargar los datos del servidor.</div>`;
+    } catch (e) {
+      console.error(e);
+      app.innerHTML = `<div class="loading" style="color:#ef4444;">Error de carga de datos.</div>`;
     }
   }
 
-  cargarInventarioNft();
+  // Función para cambiar de pestaña al hacer clic
+  function switchTab(evt, tabId) {
+    document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+  }
+
+  cargarInterfazHof();
 </script>
 
 </body>
