@@ -1,3 +1,70 @@
+Skip to content
+frotefue-dot
+mir4-web
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security and quality
+Insights
+Settings
+mir4-web
+/
+detalle.html
+in
+main
+
+Edit
+
+Preview
+Indent mode
+
+Spaces
+Indent size
+
+2
+Line wrap mode
+
+No wrap
+Editing detalle.html file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -34,286 +101,5 @@
   .header-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-
-  .char-main-info { display: flex; align-items: center; gap: 20px; }
-  .char-avatar { width: 70px; height: 70px; background: #1a2234; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .char-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  
-  .char-details h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .char-sub { display: flex; gap: 15px; font-size: 13px; color: var(--text-muted); }
-  .char-sub span strong { color: #fff; }
-  .char-sub span.lvl { color: #ef4444; }
-
-  .char-price-box { text-align: right; }
-  .price-val { font-size: 28px; font-weight: 700; color: var(--accent-gold); }
-  .price-usd { font-size: 12px; color: var(--text-muted); }
-
-  /* BARRA DE PESTAÑAS (TABS) */
-  .tabs-bar {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 8px 15px;
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-  }
-
-  .tab-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-
-  .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
-  .tab-btn.active { background: #1e293b; color: #fff; border: 1px solid var(--border-color); }
-
-  /* CONTENEDOR DE SECCIONES */
-  .section-content { display: none; }
-  .section-content.active { display: block; }
-
-  .inventory-panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-
-  .panel-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  /* CUADRÍCULAS DE ÍTEMS EXACTAS */
-  .gear-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 12px;
-  }
-
-  .gear-slot {
-    background: var(--bg-slot);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    height: 110px;
-    justify-content: space-between;
-  }
-
-  /* Rareza de bordes estilo HofGamer */
-  .gear-slot.legendary { border-color: var(--rarity-legendary); box-shadow: inset 0 0 8px rgba(245, 158, 11, 0.15); }
-  .gear-slot.epic { border-color: var(--rarity-epic); box-shadow: inset 0 0 8px rgba(168, 85, 247, 0.15); }
-  .gear-slot.rare { border-color: var(--rarity-rare); box-shadow: inset 0 0 8px rgba(59, 130, 246, 0.15); }
-
-  .slot-badge-top {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 1px 4px;
-    border-radius: 3px;
-    background: rgba(0,0,0,0.5);
-  }
-  .legendary .slot-badge-top { color: var(--rarity-legendary); }
-  .epic .slot-badge-top { color: var(--rarity-epic); }
-  .rare .slot-badge-top { color: var(--rarity-rare); }
-
-  /* Marca T de Trade */
-  .trade-t {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: #1e3a8a;
-    color: #93c5fd;
-    font-size: 9px;
-    font-weight: 800;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    border: 1px solid #3b82f6;
-  }
-
-  .gear-slot img { width: 40px; height: 40px; object-fit: contain; margin-top: 10px; }
-  .gear-name { font-size: 11px; color: #fff; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-  .gear-enhance { font-size: 10px; color: var(--accent-gold); font-weight: 700; }
-
-  .loading { text-align: center; padding: 50px; color: var(--text-muted); }
-</style>
-</head>
-<body>
-
-<div class="wrapper" id="app">
-  <div class="top-nav-back">
-    <a href="index.html" class="back-link">← Back to List</a>
-  </div>
-  <div class="loading">Cargando interfaz de inspección de fichas...</div>
-</div>
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const nftId = params.get('id');
-  const URL_API = "https://mir4-backend.onrender.com/api/nfts";
-
-  async function cargarInterfazHof() {
-    const app = document.getElementById('app');
-
-    try {
-      const res = await fetch(URL_API);
-      const data = await res.json();
-      const nft = data.items.find(item => item.id == nftId || item.url.includes(nftId));
-
-      if (!nft) {
-        app.innerHTML = `<div class="loading" style="color:#ef4444;">No se encontró el personaje ID #${nftId}</div>`;
-        return;
-      }
-
-      app.innerHTML = `
-        <div class="top-nav-back">
-          <a href="index.html" class="back-link">← Back to List</a>
-        </div>
-
-        <!-- CABECERA PRINCIPAL TIPO HOFGAMER -->
-        <div class="header-card">
-          <div class="char-main-info">
-            <div class="char-avatar">
-              <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Avatar">
-            </div>
-            <div class="char-details">
-              <h1>${nft.name}</h1>
-              <div class="char-sub">
-                <span class="lvl">Level ${nft.level}</span>
-                <span>Power: <strong>${nft.power}</strong></span>
-                <span>Server: <strong>${nft.class || 'ASIA'}</strong></span>
-              </div>
-            </div>
-          </div>
-          <div class="char-price-box">
-            <div class="price-val">💎 ${nft.price}</div>
-            <div class="price-usd">~$1,398.98 USD</div>
-          </div>
-        </div>
-
-        <!-- BARRA DE PESTAÑAS INTERACTIVAS -->
-        <div class="tabs-bar">
-          <button class="tab-btn active" onclick="switchTab(event, 'tab-equipment')">Equipment</button>
-          <button class="tab-btn" onclick="switchTab(event, 'tab-trade')">Trade Items 📦</button>
-          <button class="tab-btn" onclick="switchTab(event, 'tab-spirit')">Spirit</button>
-          <button class="tab-btn" onclick="switchTab(event, 'tab-magic')">Magic Stone</button>
-          <button class="tab-btn" onclick="switchTab(event, 'tab-skills')">Skills</button>
-        </div>
-
-        <!-- PESTAÑA 1: EQUIPMENT -->
-        <div id="tab-equipment" class="section-content active">
-          <div class="inventory-panel">
-            <div class="panel-title">Equipped Gear (Equipamiento Activo)</div>
-            <div class="gear-grid">
-              <div class="gear-slot legendary">
-                <span class="slot-badge-top">Legendary</span>
-                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-                <div class="gear-name">Chaotic Cloth</div>
-                <div class="gear-enhance">+8</div>
-              </div>
-              <div class="gear-slot epic">
-                <span class="slot-badge-top">Epic</span>
-                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-                <div class="gear-name">Heavenly Neck</div>
-                <div class="gear-enhance">+7</div>
-              </div>
-              <div class="gear-slot rare">
-                <span class="slot-badge-top">Rare</span>
-                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-                <div class="gear-name">Demon Ring</div>
-                <div class="gear-enhance">+5</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PESTAÑA 2: TRADE ITEMS (CON MARCA T) -->
-        <div id="tab-trade" class="section-content">
-          <div class="inventory-panel">
-            <div class="panel-title">Ítems Tradeables en Cartera / Almacén (Con Sello T)</div>
-            <div class="gear-grid">
-              <div class="gear-slot legendary">
-                <div class="trade-t" title="Tradeable">T</div>
-                <span class="slot-badge-top">Legendary</span>
-                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-                <div class="gear-name">Darksteel Sellado</div>
-                <div class="gear-enhance" style="color:var(--accent-cyan);">150,000 U.</div>
-              </div>
-              <div class="gear-slot epic">
-                <div class="trade-t" title="Tradeable">T</div>
-                <span class="slot-badge-top">Epic</span>
-                <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="Item">
-                <div class="gear-name">Piedra Mágica Vigor</div>
-                <div class="gear-enhance" style="color:var(--accent-cyan);">Nivel +3</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PESTAÑA 3: SPIRIT -->
-        <div id="tab-spirit" class="section-content">
-          <div class="inventory-panel">
-            <div class="panel-title">Espíritus Equipados</div>
-            <p style="color:var(--text-muted); font-size:13px;">Listado de espíritus épicos y legendarios vinculados al personaje.</p>
-          </div>
-        </div>
-
-        <!-- PESTAÑA 4: MAGIC STONE -->
-        <div id="tab-magic" class="section-content">
-          <div class="inventory-panel">
-            <div class="panel-title">Piedras Mágicas y Orbes</div>
-            <p style="color:var(--text-muted); font-size:13px;">Configuración de ranuras y piedras equipadas.</p>
-          </div>
-        </div>
-
-        <!-- PESTAÑA 5: SKILLS -->
-        <div id="tab-skills" class="section-content">
-          <div class="inventory-panel">
-            <div class="panel-title">Nivel de Habilidades (Skills)</div>
-            <p style="color:var(--text-muted); font-size:13px;">Maestrías y habilidades avanzadas desbloqueadas.</p>
-          </div>
-        </div>
-      `;
-    } catch (e) {
-      console.error(e);
-      app.innerHTML = `<div class="loading" style="color:#ef4444;">Error de carga de datos.</div>`;
-    }
-  }
-
-  // Función para cambiar de pestaña al hacer clic
-  function switchTab(evt, tabId) {
-    document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    
-    document.getElementById(tabId).classList.add('active');
-    evt.currentTarget.classList.add('active');
-  }
-
-  cargarInterfazHof();
-</script>
-
-</body>
-</html>
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+ 
