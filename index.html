@@ -29,7 +29,6 @@
 
   .wrap { max-width: 1400px; margin: 0 auto; }
 
-  /* ---- Header ---- */
   .top-bar {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -72,7 +71,6 @@
     margin-left: 6px;
   }
 
-  /* ---- Controls ---- */
   .controls {
     display: flex;
     flex-wrap: wrap;
@@ -113,7 +111,6 @@
   }
   .filter-btn { color: var(--accent-gold); font-weight: 600; border-color: rgba(245,158,11,0.4); }
 
-  /* ---- Grid ---- */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -258,14 +255,38 @@
 const URL_API = "https://mir4-backend.onrender.com/api/nfts";
 let TODOS = [];
 
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatNumber(value, fallback = '—') {
+  const num = Number(value);
+  return Number.isFinite(num) ? num.toLocaleString() : fallback;
+}
+
+function safeText(value, fallback = '') {
+  const text = String(value ?? '').trim();
+  return text || fallback;
+}
+
 async function cargarMercado() {
   const grid = document.getElementById('grid');
   const subtitle = document.getElementById('subtitle');
 
   try {
     const res = await fetch(URL_API);
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
     const data = await res.json();
-    TODOS = data.items || [];
+    TODOS = Array.isArray(data.items) ? data.items : [];
 
     document.getElementById('total-count').innerText = TODOS.length;
     subtitle.innerText = data.diagnostico || `${TODOS.length} personajes disponibles`;
@@ -282,6 +303,7 @@ async function cargarMercado() {
 function poblarFiltroClases(lista) {
   const select = document.getElementById('classFilter');
   const clases = [...new Set(lista.map(n => n.class).filter(Boolean))].sort();
+
   clases.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c;
@@ -296,16 +318,24 @@ function aplicarFiltros() {
   const orden = document.getElementById('sortBy').value;
 
   let filtrados = TODOS.filter(n => {
-    const texto = `${n.name} ${n.class} ${n.server}`.toLowerCase();
+    const texto = `${n.name || ''} ${n.class || ''} ${n.server || ''}`.toLowerCase();
     const coincideTexto = texto.includes(query);
     const coincideClase = !claseSel || n.class === claseSel;
     return coincideTexto && coincideClase;
   });
 
-  if (orden === 'power-desc') filtrados.sort((a, b) => (b.power || 0) - (a.power || 0));
-  else if (orden === 'price-asc') filtrados.sort((a, b) => (a.price_wemix ?? Infinity) - (b.price_wemix ?? Infinity));
-  else if (orden === 'price-desc') filtrados.sort((a, b) => (b.price_wemix ?? -1) - (a.price_wemix ?? -1));
-  else if (orden === 'level-desc') filtrados.sort((a, b) => (b.level || 0) - (a.level || 0));
+  if (orden === 'power-desc') filtrados.sort((a, b) => (Number(b.power) || 0) - (Number(a.power) || 0));
+  else if (orden === 'price-asc') filtrados.sort((a, b) => {
+    const ap = Number(a.price_wemix);
+    const bp = Number(b.price_wemix);
+    return (Number.isFinite(ap) ? ap : Infinity) - (Number.isFinite(bp) ? bp : Infinity);
+  });
+  else if (orden === 'price-desc') filtrados.sort((a, b) => {
+    const ap = Number(a.price_wemix);
+    const bp = Number(b.price_wemix);
+    return (Number.isFinite(bp) ? bp : -1) - (Number.isFinite(ap) ? ap : -1);
+  });
+  else if (orden === 'level-desc') filtrados.sort((a, b) => (Number(b.level) || 0) - (Number(a.level) || 0));
 
   renderizar(filtrados);
 }
@@ -319,37 +349,49 @@ function renderizar(lista) {
   }
 
   grid.innerHTML = lista.map(nft => {
+    const nftId = safeText(nft.id, '');
+    const nftName = escapeHtml(nft.name || 'Sin nombre');
+    const nftClass = escapeHtml(nft.class || 'N/A');
+    const nftServer = escapeHtml(nft.server || '');
+    const nftImage = escapeHtml(
+      nft.image || 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png'
+    );
+    const nftUrl = nft.url ? escapeHtml(nft.url) : '#';
+
     const auctionTag = nft.is_auction ? `<span class="tag-auction">🔨 Subasta</span>` : '';
-    const precioUsd = (nft.price_usd !== null && nft.price_usd !== undefined)
-      ? `≈ $${nft.price_usd.toLocaleString()}`
-      : '';
+    const precioUsd = Number(nft.price_usd);
+    const precioUsdTxt = Number.isFinite(precioUsd) ? `≈ $${precioUsd.toLocaleString()}` : '';
+    const powerTxt = formatNumber(nft.power, '0');
+    const levelTxt = formatNumber(nft.level, '—');
+    const wemixTxt = formatNumber(nft.price_wemix, '0');
+    const enhancementTxt = formatNumber(nft.enhancement, '0');
 
     return `
-      <a class="card" href="${nft.url}" target="_blank" rel="noopener">
+      <a class="card" href="${nftUrl}" target="_blank" rel="noopener noreferrer">
         <div class="card-img">
-          <span class="tag-class">${nft.class || 'N/A'}</span>
+          <span class="tag-class">${nftClass}</span>
           ${auctionTag}
-          <img src="${nft.image}" alt="${nft.name}" loading="lazy"
-               onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
+          <img src="${nftImage}" alt="${nftName}" loading="lazy"
+               onerror="this.onerror=null;this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
         </div>
         <div class="card-body">
-          <div class="card-title" title="${nft.name}">${nft.name}</div>
+          <div class="card-title" title="${nftName}">${nftName}</div>
           <div class="card-stats">
-            <span>Lv. <strong>${nft.level ?? '—'}</strong></span>
-            <span>PS: <strong>${(nft.power || 0).toLocaleString()}</strong></span>
+            <span>Lv. <strong>${levelTxt}</strong></span>
+            <span>PS: <strong>${powerTxt}</strong></span>
           </div>
-          <div class="card-server">${nft.server || ''}</div>
+          <div class="card-server">${nftServer}</div>
         </div>
         <div class="card-footer">
-          <div class="price-wemix">${(nft.price_wemix ?? 0).toLocaleString()} WEMIX</div>
-          <div class="price-usd">${precioUsd}</div>
+          <div class="price-wemix">${wemixTxt} WEMIX</div>
+          <div class="price-usd">${precioUsdTxt}</div>
         </div>
       </a>
     `;
   }).join('');
 }
 
-cargarMercado();
+document.addEventListener('DOMContentLoaded', cargarMercado);
 </script>
 </body>
 </html>
