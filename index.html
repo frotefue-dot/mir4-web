@@ -3,395 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIR4 NFT Marketplace</title>
+<title>MIR4 NFT Marketplace - Explorador Oficial</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-main: #07090e;
     --bg-card: #0d111a;
-    --bg-card-hover: #131b2e;
-    --border: #1e293b;
+    --bg-slot: #121824;
+    --border-color: #212c42;
+    --accent-blue: #3b82f6;
     --accent-gold: #f59e0b;
     --accent-cyan: #06b6d4;
-    --accent-red: #ef4444;
+    --rarity-legendary: #f59e0b;
+    --rarity-epic: #a855f7;
+    --rarity-rare: #3b82f6;
     --text-main: #f8fafc;
-    --text-muted: #8892a6;
+    --text-muted: #94a3b8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Outfit', sans-serif; padding: 20px; }
 
-  body {
-    background: var(--bg-main);
-    color: var(--text-main);
-    font-family: 'Outfit', system-ui, sans-serif;
-    padding: 18px;
-  }
+  .wrapper { max-width: 1400px; margin: 0 auto; }
 
-  .wrap { max-width: 1400px; margin: 0 auto; }
-
-  .top-bar {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 20px;
+  header {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-
-  .brand { display: flex; align-items: baseline; gap: 10px; }
-  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
-  .brand span { font-size: 12px; color: var(--text-muted); }
-
-  .status-tabs { display: flex; gap: 6px; }
-  .status-tabs button {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .status-tabs button.active {
-    background: rgba(245, 158, 11, 0.12);
-    border-color: var(--accent-gold);
-    color: var(--accent-gold);
-  }
-  .status-tabs .count {
-    background: var(--accent-red);
-    color: #fff;
-    font-size: 11px;
-    padding: 1px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-  }
-
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  .search-box {
-    flex: 1 1 260px;
-    display: flex;
     align-items: center;
-    gap: 8px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 14px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
   }
-  .search-box input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-main);
-    font-family: inherit;
-    font-size: 14px;
-    width: 100%;
-  }
-  .search-box input::placeholder { color: var(--text-muted); }
+  header h1 { font-size: 24px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+  header h1 span { color: var(--accent-cyan); }
 
-  select, .filter-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-main);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-family: inherit;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  .filter-btn { color: var(--accent-gold); font-weight: 600; border-color: rgba(245,158,11,0.4); }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  /* FILTROS Y BUSCADOR */
+  .filters-bar {
+    display: flex;
     gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  .filter-input, .filter-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-input { flex-grow: 1; min-width: 240px; }
+  .filter-input:focus, .filter-select:focus { border-color: var(--accent-cyan); }
+
+  /* GRID DE TARJETAS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
   }
 
   .card {
     background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     border-color: var(--accent-cyan);
-  }
-  .card:focus-visible {
-    outline: 2px solid var(--accent-cyan);
-    outline-offset: 2px;
+    box-shadow: 0 10px 25px rgba(6, 182, 212, 0.15);
   }
 
-  .card-img {
-    position: relative;
+  .card-img-container {
     width: 100%;
-    height: 130px;
-    background: #111827;
+    height: 200px;
+    background: var(--bg-slot);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    border-bottom: 1px solid var(--border-color);
   }
-  .card-img img { width: 100%; height: 100%; object-fit: contain; }
+  .card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s;
+  }
+  .card:hover .card-img-container img { transform: scale(1.05); }
 
   .tag-class {
     position: absolute;
-    top: 6px;
-    left: 6px;
-    background: rgba(0,0,0,0.75);
+    top: 10px;
+    left: 10px;
+    background: rgba(6, 182, 212, 0.15);
     color: var(--accent-cyan);
-    font-size: 10px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 5px;
-    border: 1px solid rgba(6,182,212,0.35);
+    text-transform: uppercase;
+    z-index: 2;
   }
 
   .tag-auction {
     position: absolute;
-    top: 6px;
-    right: 6px;
-    background: rgba(245,158,11,0.15);
+    top: 10px;
+    right: 10px;
+    background: rgba(245, 158, 11, 0.15);
     color: var(--accent-gold);
-    font-size: 10px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 5px;
-    border: 1px solid rgba(245,158,11,0.4);
+    z-index: 2;
   }
 
-  .card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+  .card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+  }
+
   .card-title {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   .card-stats {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-muted);
   }
   .card-stats strong { color: var(--text-main); }
-  .card-server { font-size: 10px; color: var(--text-muted); }
+
+  .card-server {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-slot);
+    padding: 4px 8px;
+    border-radius: 6px;
+    align-self: flex-start;
+    border: 1px solid var(--border-color);
+  }
 
   .card-footer {
-    padding: 8px 12px 12px;
-    border-top: 1px solid var(--border);
-    margin-top: auto;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
-  .price-wemix { font-size: 13px; font-weight: 700; color: var(--accent-gold); }
-  .price-usd { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-  .empty-state, .loading-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
+  .price-wemix {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent-gold);
+  }
+  .price-usd {
+    font-size: 12px;
     color: var(--text-muted);
-    font-size: 14px;
   }
-  .error-state { color: var(--accent-red); }
 
-  @media (max-width: 480px) {
-    .top-bar { flex-direction: column; align-items: flex-start; }
-    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .status-message {
+    text-align: center;
+    padding: 60px;
+    color: var(--text-muted);
+    font-size: 16px;
+    grid-column: 1 / -1;
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="top-bar">
-    <div class="brand">
-      <h1>MIR4 NFT Marketplace</h1>
-      <span id="subtitle">Conectando con WEMIX PLAY…</span>
-    </div>
-    <div class="status-tabs">
-      <button class="active">🔥 En venta<span class="count" id="total-count">0</span></button>
-    </div>
-  </div>
+<div class="wrapper">
+  <header>
+    <h1>MIR4 NFT <span>Marketplace</span></h1>
+    <div id="stats-counter" style="color: var(--text-muted); font-size: 14px;">Cargando mercado...</div>
+  </header>
 
-  <div class="controls">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Buscar por nombre, clase o servidor…" oninput="aplicarFiltros()">
-    </div>
-    <select id="sortBy" onchange="aplicarFiltros()">
-      <option value="recent">Ordenar: recientes</option>
-      <option value="power-desc">Poder: mayor a menor</option>
-      <option value="price-asc">Precio: menor a mayor</option>
-      <option value="price-desc">Precio: mayor a menor</option>
-      <option value="level-desc">Nivel: mayor a menor</option>
+  <div class="filters-bar">
+    <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Buscar por nombre o servidor..." oninput="filtrarYRenderizar()">
+    <select id="classFilter" class="filter-select" onchange="filtrarYRenderizar()">
+      <option value="">Todas las Clases</option>
     </select>
-    <select id="classFilter" onchange="aplicarFiltros()">
-      <option value="">Todas las clases</option>
+    <select id="sortSelect" class="filter-select" onchange="filtrarYRenderizar()">
+      <option value="power-desc">Power Score: Mayor a Menor</option>
+      <option value="power-asc">Power Score: Menor a Mayor</option>
+      <option value="price-asc">Precio: Menor a Mayor</option>
+      <option value="price-desc">Precio: Mayor a Menor</option>
+      <option value="level-desc">Nivel: Mayor a Menor</option>
     </select>
   </div>
 
-  <div class="grid" id="grid">
-    <div class="loading-state">Cargando personajes desde WEMIX PLAY…</div>
+  <div id="cardsContainer" class="cards-grid">
+    <div class="status-message">Conectando con el servidor para obtener los NFTs...</div>
   </div>
-
 </div>
 
 <script>
-const URL_API = "https://mir4-backend.onrender.com/api/nfts";
-let TODOS = [];
+  const URL_API = "https://mir4-backend.onrender.com/api/nfts";
+  let allNfts = [];
 
-function escapeHtml(str) {
-  return String(str ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
-function formatNumber(value, fallback = '—') {
-  const num = Number(value);
-  return Number.isFinite(num) ? num.toLocaleString() : fallback;
-}
+  function formatNumber(value, fallback = '—') {
+    const num = Number(value);
+    return Number.isFinite(num) ? num.toLocaleString() : fallback;
+  }
 
-function safeText(value, fallback = '') {
-  const text = String(value ?? '').trim();
-  return text || fallback;
-}
+  async function cargarMercado() {
+    const container = document.getElementById('cardsContainer');
+    const counter = document.getElementById('stats-counter');
 
-async function cargarMercado() {
-  const grid = document.getElementById('grid');
-  const subtitle = document.getElementById('subtitle');
+    try {
+      const res = await fetch(URL_API);
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
 
-  try {
-    const res = await fetch(URL_API);
+      const data = await res.json();
+      allNfts = Array.isArray(data.items) ? data.items : [];
 
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
+      poblarClases();
+      filtrarYRenderizar();
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = `<div class="status-message" style="color: #ef4444;">Error al conectar con el backend para cargar el mercado.</div>`;
+      counter.textContent = "Error de conexión";
+    }
+  }
+
+  function poblarClases() {
+    const classSelect = document.getElementById('classFilter');
+    const clasesUnicas = [...new Set(allNfts.map(n => n.class).filter(Boolean))].sort();
+    
+    let optionsHTML = '<option value="">Todas las Clases</option>';
+    clasesUnicas.forEach(c => {
+      optionsHTML += `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`;
+    });
+    classSelect.innerHTML = optionsHTML;
+  }
+
+  function filtrarYRenderizar() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const selectedClass = document.getElementById('classFilter').value;
+    const sortBy = document.getElementById('sortSelect').value;
+    const container = document.getElementById('cardsContainer');
+    const counter = document.getElementById('stats-counter');
+
+    let filtrados = allNfts.filter(nft => {
+      const name = String(nft.name || '').toLowerCase();
+      const server = String(nft.server || '').toLowerCase();
+      const matchesSearch = name.includes(searchTerm) || server.includes(searchTerm);
+      const matchesClass = !selectedClass || nft.class === selectedClass;
+      return matchesSearch && matchesClass;
+    });
+
+    filtrados.sort((a, b) => {
+      if (sortBy === 'power-desc') return (b.power || 0) - (a.power || 0);
+      if (sortBy === 'power-asc') return (a.power || 0) - (b.power || 0);
+      if (sortBy === 'price-asc') return (a.price_wemix || 0) - (b.price_wemix || 0);
+      if (sortBy === 'price-desc') return (b.price_wemix || 0) - (a.price_wemix || 0);
+      if (sortBy === 'level-desc') return (b.level || 0) - (a.level || 0);
+      return 0;
+    });
+
+    counter.textContent = `${filtrados.length} NFTs encontrados`;
+
+    if (filtrados.length === 0) {
+      container.innerHTML = `<div class="status-message">No se encontraron personajes con los filtros seleccionados.</div>`;
+      return;
     }
 
-    const data = await res.json();
-    TODOS = Array.isArray(data.items) ? data.items : [];
+    container.innerHTML = filtrados.map(nft => {
+      const safeId = escapeHtml(nft.id);
+      const safeName = escapeHtml(nft.name || 'Sin nombre');
+      const safeClass = escapeHtml(nft.class || 'N/A');
+      const safeServer = escapeHtml(nft.server || 'N/A');
+      const safeImage = escapeHtml(nft.image || 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png');
+      
+      const levelText = formatNumber(nft.level, '—');
+      const powerText = formatNumber(nft.power, '0');
+      const wemixText = formatNumber(nft.price_wemix, '0');
+      
+      const usdVal = Number(nft.price_usd);
+      const usdText = Number.isFinite(usdVal) ? `≈ $${usdVal.toLocaleString()} USD` : '';
 
-    document.getElementById('total-count').innerText = TODOS.length;
-    subtitle.innerText = data.diagnostico || `${TODOS.length} personajes disponibles`;
+      const auctionTag = nft.is_auction ? `<span class="tag-auction">Subasta</span>` : '';
 
-    poblarFiltroClases(TODOS);
-    aplicarFiltros();
-  } catch (err) {
-    console.error(err);
-    grid.innerHTML = `<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando (los servicios gratuitos de Render tardan ~1 min en despertar) — recarga en un momento.</div>`;
-    subtitle.innerText = "Error de conexión";
-  }
-}
-
-function poblarFiltroClases(lista) {
-  const select = document.getElementById('classFilter');
-  const clases = [...new Set(lista.map(n => n.class).filter(Boolean))].sort();
-
-  clases.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
-    select.appendChild(opt);
-  });
-}
-
-function aplicarFiltros() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const claseSel = document.getElementById('classFilter').value;
-  const orden = document.getElementById('sortBy').value;
-
-  let filtrados = TODOS.filter(n => {
-    const texto = `${n.name || ''} ${n.class || ''} ${n.server || ''}`.toLowerCase();
-    const coincideTexto = texto.includes(query);
-    const coincideClase = !claseSel || n.class === claseSel;
-    return coincideTexto && coincideClase;
-  });
-
-  if (orden === 'power-desc') filtrados.sort((a, b) => (Number(b.power) || 0) - (Number(a.power) || 0));
-  else if (orden === 'price-asc') filtrados.sort((a, b) => {
-    const ap = Number(a.price_wemix);
-    const bp = Number(b.price_wemix);
-    return (Number.isFinite(ap) ? ap : Infinity) - (Number.isFinite(bp) ? bp : Infinity);
-  });
-  else if (orden === 'price-desc') filtrados.sort((a, b) => {
-    const ap = Number(a.price_wemix);
-    const bp = Number(b.price_wemix);
-    return (Number.isFinite(bp) ? bp : -1) - (Number.isFinite(ap) ? ap : -1);
-  });
-  else if (orden === 'level-desc') filtrados.sort((a, b) => (Number(b.level) || 0) - (Number(a.level) || 0));
-
-  renderizar(filtrados);
-}
-
-function renderizar(lista) {
-  const grid = document.getElementById('grid');
-
-  if (lista.length === 0) {
-    grid.innerHTML = `<div class="empty-state">Ningún personaje coincide con esa búsqueda.</div>`;
-    return;
-  }
-
-  grid.innerHTML = lista.map(nft => {
-    const nftId = safeText(nft.id, '');
-    const nftName = escapeHtml(nft.name || 'Sin nombre');
-    const nftClass = escapeHtml(nft.class || 'N/A');
-    const nftServer = escapeHtml(nft.server || '');
-    const nftImage = escapeHtml(
-      nft.image || 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png'
-    );
-    const nftUrl = nft.url ? escapeHtml(nft.url) : '#';
-
-    const auctionTag = nft.is_auction ? `<span class="tag-auction">🔨 Subasta</span>` : '';
-    const precioUsd = Number(nft.price_usd);
-    const precioUsdTxt = Number.isFinite(precioUsd) ? `≈ $${precioUsd.toLocaleString()}` : '';
-    const powerTxt = formatNumber(nft.power, '0');
-    const levelTxt = formatNumber(nft.level, '—');
-    const wemixTxt = formatNumber(nft.price_wemix, '0');
-    const enhancementTxt = formatNumber(nft.enhancement, '0');
-
-    return `
-      <a class="card" href="${nftUrl}" target="_blank" rel="noopener noreferrer">
-        <div class="card-img">
-          <span class="tag-class">${nftClass}</span>
-          ${auctionTag}
-          <img src="${nftImage}" alt="${nftName}" loading="lazy"
-               onerror="this.onerror=null;this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
-        </div>
-        <div class="card-body">
-          <div class="card-title" title="${nftName}">${nftName}</div>
-          <div class="card-stats">
-            <span>Lv. <strong>${levelTxt}</strong></span>
-            <span>PS: <strong>${powerTxt}</strong></span>
+      return `
+        <a class="card" href="detalle.html?id=${safeId}">
+          <div class="card-img-container">
+            <span class="tag-class">${safeClass}</span>
+            ${auctionTag}
+            <img src="${safeImage}" alt="${safeName}" loading="lazy"
+                 onerror="this.onerror=null;this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
           </div>
-          <div class="card-server">${nftServer}</div>
-        </div>
-        <div class="card-footer">
-          <div class="price-wemix">${wemixTxt} WEMIX</div>
-          <div class="price-usd">${precioUsdTxt}</div>
-        </div>
-      </a>
-    `;
-  }).join('');
-}
+          <div class="card-body">
+            <div class="card-title" title="${safeName}">${safeName}</div>
+            <div class="card-stats">
+              <span>Lv. <strong>${levelText}</strong></span>
+              <span>PS: <strong>${powerText}</strong></span>
+            </div>
+            <div class="card-server">${safeServer}</div>
+          </div>
+          <div class="card-footer">
+            <div class="price-wemix">${wemixText} WEMIX</div>
+            <div class="price-usd">${usdText}</div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
 
-document.addEventListener('DOMContentLoaded', cargarMercado);
+  document.addEventListener('DOMContentLoaded', cargarMercado);
 </script>
+
 </body>
 </html>
