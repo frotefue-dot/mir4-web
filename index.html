@@ -3,287 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIR4 NFT Marketplace Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>MIR4 NFT Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-main: #07090e;
     --bg-card: #0d111a;
     --bg-card-hover: #131b2e;
-    --border-color: #1e293b;
-    --accent-red: #ef4444;
+    --border: #1e293b;
     --accent-gold: #f59e0b;
     --accent-cyan: #06b6d4;
+    --accent-red: #ef4444;
     --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --text-muted: #8892a6;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Outfit', sans-serif; padding: 15px; }
 
-  .wrapper { max-width: 1400px; margin: 0 auto; }
+  body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Outfit', system-ui, sans-serif;
+    padding: 18px;
+  }
 
-  /* BARRA DE NAVEGACIÓN SUPERIOR EXACTA */
-  .market-header {
+  .wrap { max-width: 1400px; margin: 0 auto; }
+
+  /* ---- Header ---- */
+  .top-bar {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 12px 20px;
+    padding: 14px 20px;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
   }
 
-  .header-left, .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
+  .brand span { font-size: 12px; color: var(--text-muted); }
 
-  .status-tab {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border-color);
+  .status-tabs { display: flex; gap: 6px; }
+  .status-tabs button {
+    background: transparent;
+    border: 1px solid var(--border);
     color: var(--text-muted);
-    padding: 6px 14px;
+    padding: 7px 14px;
     border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+  }
+  .status-tabs button.active {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+  .status-tabs .count {
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  /* ---- Controls ---- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .search-box {
+    flex: 1 1 260px;
     display: flex;
     align-items: center;
-    gap: 6px;
-  }
-  .status-tab.active { background: #1e293b; color: #fff; border-color: #334155; }
-  .status-tab .badge-red { background: var(--accent-red); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 4px; }
-
-  /* BUSCADOR CENTRAL */
-  .search-box {
-    position: relative;
-    flex-grow: 1;
-    max-width: 350px;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
   }
   .search-box input {
-    width: 100%;
-    background: #07090e;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 8px 12px 8px 35px;
-    color: #fff;
-    font-size: 13px;
-    outline: none;
-  }
-  .search-box input:focus { border-color: var(--accent-cyan); }
-  .search-box span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
-
-  .filter-select {
-    background: #07090e;
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 7px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .btn-advanced {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #000;
+    background: transparent;
     border: none;
-    padding: 7px 16px;
-    border-radius: 8px;
+    outline: none;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+
+  select, .filter-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: inherit;
     font-size: 13px;
-    font-weight: 700;
     cursor: pointer;
   }
+  .filter-btn { color: var(--accent-gold); font-weight: 600; border-color: rgba(245,158,11,0.4); }
 
-  /* CUADRÍCULA DE TARJETAS TIPO HOFGAMER */
-  .nft-grid {
+  /* ---- Grid ---- */
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
   }
 
-  .nft-card {
+  .card {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
+    transition: transform 0.15s ease, border-color 0.15s ease;
   }
-
-  .nft-card:hover {
+  .card:hover {
     transform: translateY(-3px);
     border-color: var(--accent-cyan);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  }
+  .card:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
   }
 
-  .card-img-container {
-    width: 100%;
-    height: 140px;
-    background: #111827;
+  .card-img {
     position: relative;
+    width: 100%;
+    height: 130px;
+    background: #111827;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
   }
+  .card-img img { width: 100%; height: 100%; object-fit: contain; }
 
-  .card-img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-  .class-tag {
+  .tag-class {
     position: absolute;
     top: 6px;
     left: 6px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     color: var(--accent-cyan);
     font-size: 10px;
     font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid rgba(6, 182, 212, 0.3);
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid rgba(6,182,212,0.35);
   }
 
-  .card-body { padding: 10px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between; }
-  .card-title { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tag-auction {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(245,158,11,0.15);
+    color: var(--accent-gold);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid rgba(245,158,11,0.4);
+  }
 
-  .card-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
-  .card-stats span strong { color: #fff; }
-  .card-stats .lvl { color: var(--accent-red); font-weight: 700; }
-
-  .card-price-row {
+  .card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-stats {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border-color);
-    padding-top: 6px;
-    margin-top: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .card-stats strong { color: var(--text-main); }
+  .card-server { font-size: 10px; color: var(--text-muted); }
+
+  .card-footer {
+    padding: 8px 12px 12px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
   }
   .price-wemix { font-size: 13px; font-weight: 700; color: var(--accent-gold); }
-  .price-fiat { font-size: 10px; color: var(--text-muted); }
+  .price-usd { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-  .loading-msg { text-align: center; padding: 60px; color: var(--text-muted); grid-column: span 5; }
+  .empty-state, .loading-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .error-state { color: var(--accent-red); }
+
+  @media (max-width: 480px) {
+    .top-bar { flex-direction: column; align-items: flex-start; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="wrapper">
-  <!-- CABECERA DE FILTROS Y BÚSQUEDA -->
-  <div class="market-header">
-    <div class="header-left">
-      <button class="status-tab active">🔥 For Sale <span class="badge-red" id="total-count">0</span></button>
-      <button class="status-tab">Sold</button>
-      <button class="status-tab">Delisted</button>
+  <div class="top-bar">
+    <div class="brand">
+      <h1>MIR4 NFT Marketplace</h1>
+      <span id="subtitle">Conectando con WEMIX PLAY…</span>
     </div>
+    <div class="status-tabs">
+      <button class="active">🔥 En venta<span class="count" id="total-count">0</span></button>
+    </div>
+  </div>
 
-    <!-- Buscador interactivo -->
+  <div class="controls">
     <div class="search-box">
       <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Search Character / NFT ID..." oninput="filtrarNfts()">
+      <input type="text" id="searchInput" placeholder="Buscar por nombre, clase o servidor…" oninput="aplicarFiltros()">
     </div>
-
-    <div class="header-right">
-      <select class="filter-select" id="sortBy" onchange="filtrarNfts()">
-        <option value="recent">Sort: Time</option>
-        <option value="power">Power Score (High)</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-      </select>
-      <button class="btn-advanced">⚡ Advanced</button>
-    </div>
+    <select id="sortBy" onchange="aplicarFiltros()">
+      <option value="recent">Ordenar: recientes</option>
+      <option value="power-desc">Poder: mayor a menor</option>
+      <option value="price-asc">Precio: menor a mayor</option>
+      <option value="price-desc">Precio: mayor a menor</option>
+      <option value="level-desc">Nivel: mayor a menor</option>
+    </select>
+    <select id="classFilter" onchange="aplicarFiltros()">
+      <option value="">Todas las clases</option>
+    </select>
   </div>
 
-  <!-- CUADRÍCULA DE NFTs -->
-  <div class="nft-grid" id="grid-container">
-    <div class="loading-msg">Cargando mercado de personajes desde el backend...</div>
+  <div class="grid" id="grid">
+    <div class="loading-state">Cargando personajes desde WEMIX PLAY…</div>
   </div>
+
 </div>
 
 <script>
-  const URL_API = "https://mir4-backend.onrender.com/api/nfts";
-  let todosLosNfts = [];
+const URL_API = "https://mir4-backend.onrender.com/api/nfts";
+let TODOS = [];
 
-  async function cargarMercado() {
-    try {
-      const res = await fetch(URL_API);
-      const data = await res.json();
-      todosLosNfts = data.items || [];
-      
-      document.getElementById('total-count').innerText = todosLosNfts.length;
-      renderizarNfts(todosLosNfts);
-    } catch (e) {
-      console.error(e);
-      document.getElementById('grid-container').innerHTML = `<div class="loading-msg" style="color:var(--accent-red);">Error al conectar con el servidor backend.</div>`;
-    }
+async function cargarMercado() {
+  const grid = document.getElementById('grid');
+  const subtitle = document.getElementById('subtitle');
+
+  try {
+    const res = await fetch(URL_API);
+    const data = await res.json();
+    TODOS = data.items || [];
+
+    document.getElementById('total-count').innerText = TODOS.length;
+    subtitle.innerText = data.diagnostico || `${TODOS.length} personajes disponibles`;
+
+    poblarFiltroClases(TODOS);
+    aplicarFiltros();
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = `<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando (los servicios gratuitos de Render tardan ~1 min en despertar) — recarga en un momento.</div>`;
+    subtitle.innerText = "Error de conexión";
+  }
+}
+
+function poblarFiltroClases(lista) {
+  const select = document.getElementById('classFilter');
+  const clases = [...new Set(lista.map(n => n.class).filter(Boolean))].sort();
+  clases.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+}
+
+function aplicarFiltros() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const claseSel = document.getElementById('classFilter').value;
+  const orden = document.getElementById('sortBy').value;
+
+  let filtrados = TODOS.filter(n => {
+    const texto = `${n.name} ${n.class} ${n.server}`.toLowerCase();
+    const coincideTexto = texto.includes(query);
+    const coincideClase = !claseSel || n.class === claseSel;
+    return coincideTexto && coincideClase;
+  });
+
+  if (orden === 'power-desc') filtrados.sort((a, b) => (b.power || 0) - (a.power || 0));
+  else if (orden === 'price-asc') filtrados.sort((a, b) => (a.price_wemix ?? Infinity) - (b.price_wemix ?? Infinity));
+  else if (orden === 'price-desc') filtrados.sort((a, b) => (b.price_wemix ?? -1) - (a.price_wemix ?? -1));
+  else if (orden === 'level-desc') filtrados.sort((a, b) => (b.level || 0) - (a.level || 0));
+
+  renderizar(filtrados);
+}
+
+function renderizar(lista) {
+  const grid = document.getElementById('grid');
+
+  if (lista.length === 0) {
+    grid.innerHTML = `<div class="empty-state">Ningún personaje coincide con esa búsqueda.</div>`;
+    return;
   }
 
-  function renderizarNfts(lista) {
-    const container = document.getElementById('grid-container');
-    
-    if (lista.length === 0) {
-      container.innerHTML = `<div class="loading-msg">No se encontraron personajes con esos filtros.</div>`;
-      return;
-    }
+  grid.innerHTML = lista.map(nft => {
+    const auctionTag = nft.is_auction ? `<span class="tag-auction">🔨 Subasta</span>` : '';
+    const precioUsd = (nft.price_usd !== null && nft.price_usd !== undefined)
+      ? `≈ $${nft.price_usd.toLocaleString()}`
+      : '';
 
-    container.innerHTML = lista.map(nft => {
-      // Extraemos ID de la URL o usamos un identificador único
-      const nftId = nft.id || nft.url.split('/').pop();
-      
-      return `
-        <a href="detalle.html?id=${nftId}&url=${encodeURIComponent(nft.url)}" class="nft-card">
-          <div class="card-img-container">
-            <span class="class-tag">${nft.class || 'LANCER'}</span>
-            <img src="https://www.xdraco.com/nft/assets/img/common/thumb-default.png" alt="${nft.name}">
+    return `
+      <a class="card" href="${nft.url}" target="_blank" rel="noopener">
+        <div class="card-img">
+          <span class="tag-class">${nft.class || 'N/A'}</span>
+          ${auctionTag}
+          <img src="${nft.image}" alt="${nft.name}" loading="lazy"
+               onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
+        </div>
+        <div class="card-body">
+          <div class="card-title" title="${nft.name}">${nft.name}</div>
+          <div class="card-stats">
+            <span>Lv. <strong>${nft.level ?? '—'}</strong></span>
+            <span>PS: <strong>${(nft.power || 0).toLocaleString()}</strong></span>
           </div>
-          <div class="card-body">
-            <div class="card-title">${nft.name}</div>
-            <div class="card-stats">
-              <span class="lvl">Lv.${nft.level}</span>
-              <span>PS: <strong>${nft.power}</strong></span>
-            </div>
-            <div class="card-price-row">
-              <span class="price-wemix">💎 ${nft.price}</span>
-              <span class="price-fiat">~$1,200</span>
-            </div>
-          </div>
-        </a>
-      `;
-    }).join('');
-  }
+          <div class="card-server">${nft.server || ''}</div>
+        </div>
+        <div class="card-footer">
+          <div class="price-wemix">${(nft.price_wemix ?? 0).toLocaleString()} WEMIX</div>
+          <div class="price-usd">${precioUsd}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
 
-  function filtrarNfts() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const sortMethod = document.getElementById('sortBy').value;
-
-    // Filtrar por texto o ID
-    let filtrados = todosLosNfts.filter(nft => {
-      const nameMatch = nft.name.toLowerCase().includes(query);
-      const idMatch = nft.url.toLowerCase().includes(query) || (nft.id && nft.id.toString().includes(query));
-      return nameMatch || idMatch;
-    });
-
-    // Ordenar resultados
-    if (sortMethod === 'power') {
-      filtrados.sort((a, b) => parseInt(b.power.replace(/,/g, '')) - parseInt(a.power.replace(/,/g, '')));
-    } else if (sortMethod === 'price-asc') {
-      filtrados.sort((a, b) => parseFloat(a.price.replace(/,/g, '')) - parseFloat(b.price.replace(/,/g, '')));
-    } else if (sortMethod === 'price-desc') {
-      filtrados.sort((a, b) => parseFloat(b.price.replace(/,/g, '')) - parseFloat(a.price.replace(/,/g, '')));
-    }
-
-    renderizarNfts(filtrados);
-  }
-
-  cargarMercado();
+cargarMercado();
 </script>
-
 </body>
 </html>
