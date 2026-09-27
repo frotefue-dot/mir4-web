@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Colores del diseño original (primer HTML) */
+    /* Colores del diseño original */
     --bg-main: #07090e;
     --bg-card: #0d111a;
     --bg-card-hover: #131b2e;
@@ -35,7 +35,7 @@
 
   .wrap { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
 
-  /* Barra superior estilo original */
+  /* Barra superior */
   .top-bar {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -47,11 +47,11 @@
     gap: 14px;
   }
   .brand { display: flex; align-items: baseline; gap: 10px; }
-  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; color: var(--text-main); }
+  .brand h1 { font-size: 18px; font-weight: 700; color: var(--text-main); }
   .btn-back { color: var(--accent-cyan); text-decoration: none; font-weight: 700; font-size: 14px; }
   .btn-back:hover { text-decoration: underline; }
 
-  /* Hero Card (Perfil del NFT) - Adaptado al estilo original */
+  /* Hero Card */
   .hero-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -67,7 +67,7 @@
     width: 200px;
     height: 200px;
     background: #111827;
-    border: 2px solid var(--border); /* Se reescribe por JS según rareza */
+    border: 2px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
@@ -108,7 +108,7 @@
   }
   .btn:hover { background: rgba(6, 182, 212, 0.1); }
 
-  /* Pestañas de inventario (Reusando status-tabs) */
+  /* Pestañas de inventario */
   .status-tabs { display: flex; gap: 6px; margin: 10px 0; }
   .status-tabs button {
     background: var(--bg-card);
@@ -126,7 +126,7 @@
     color: var(--accent-cyan);
   }
 
-  /* Grid de inventario (Reusando grid y card originales) */
+  /* Grid de inventario */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -134,7 +134,7 @@
   }
   .card {
     background: var(--bg-card);
-    border: 1px solid var(--border); /* Dinámico por JS */
+    border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
@@ -155,7 +155,7 @@
   }
   .card-img img { width: 70%; height: 70%; object-fit: contain; }
 
-  /* Etiquetas estilo original con soporte para rareza */
+  /* Etiquetas de Rareza */
   .tag-rarity {
     position: absolute;
     top: 8px;
@@ -184,16 +184,18 @@
   .card-title { font-size: 13px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-stats { font-size: 11px; color: var(--text-muted); }
 
-  /* Clases dinámicas de rareza */
+  /* Clases dinámicas de colores */
   .border-legendary { border-color: var(--rarity-legendary) !important; box-shadow: 0 0 10px rgba(245, 158, 11, 0.15); }
   .border-epic { border-color: var(--rarity-epic) !important; box-shadow: 0 0 10px rgba(239, 68, 68, 0.15); }
   .border-rare { border-color: var(--rarity-rare) !important; }
   .border-uncommon { border-color: var(--rarity-uncommon) !important; }
+  .border-common { border-color: var(--rarity-common) !important; }
   
   .text-legendary { color: var(--rarity-legendary) !important; }
   .text-epic { color: var(--rarity-epic) !important; }
   .text-rare { color: var(--rarity-rare) !important; }
   .text-uncommon { color: var(--rarity-uncommon) !important; }
+  .text-common { color: var(--rarity-common) !important; }
 
   .empty-state { text-align: center; padding: 60px; color: var(--text-muted); font-size: 14px; grid-column: 1 / -1; }
 
@@ -218,9 +220,10 @@
   </div>
 
   <div class="status-tabs" id="inventory-filters" style="display: none;">
-    <button class="active" onclick="filtrar('all')">Todos los ítems</button>
-    <button onclick="filtrar('tradeable')">Tradeables</button>
-    <button onclick="filtrar('bound')">Bindeados</button>
+    <!-- OJO AQUI: Se cambió la forma de llamar a la función (agregando 'this') -->
+    <button class="active" onclick="filtrar('all', this)">Todos los ítems</button>
+    <button onclick="filtrar('tradeable', this)">Tradeables</button>
+    <button onclick="filtrar('bound', this)">Bindeados</button>
   </div>
 
   <div class="grid" id="inventory-grid">
@@ -232,9 +235,9 @@
 const URL_API = "https://mir4-backend.onrender.com/api/nfts";
 let itemsInventario = [];
 
-// Función para determinar la rareza (Basado en grados del 1 al 5 o por nombre de clase)
+// Determinar rareza de forma segura
 function getRarityInfo(gradeOrClass) {
-  const val = String(gradeOrClass).toLowerCase();
+  const val = String(gradeOrClass || '').toLowerCase();
   if (val.includes('5') || val.includes('legendary') || val.includes('legendario')) return { class: 'legendary', label: 'Legendary' };
   if (val.includes('4') || val.includes('epic') || val.includes('epico')) return { class: 'epic', label: 'Epic' };
   if (val.includes('3') || val.includes('rare') || val.includes('raro')) return { class: 'rare', label: 'Rare' };
@@ -247,36 +250,42 @@ async function cargarDetalle() {
   const id = params.get('id');
 
   if (!id) {
-    document.getElementById('hero-container').innerHTML = `<div class="empty-state" style="color:var(--accent-red)">ID no proporcionado.</div>`;
+    document.getElementById('hero-container').innerHTML = `<div class="empty-state" style="color:var(--accent-red)">ID no proporcionado en la URL.</div>`;
     return;
   }
 
   try {
     const res = await fetch(URL_API);
+    if (!res.ok) throw new Error("Fallo la conexión con el servidor");
+    
     const data = await res.json();
-    const nft = data.items.find(n => String(n.id) === String(id));
+    
+    // Validación de seguridad por si data.items viene nulo
+    const listaItems = Array.isArray(data.items) ? data.items : [];
+    const nft = listaItems.find(n => String(n.id) === String(id));
 
-    if (!nft) throw new Error("Personaje no encontrado");
+    if (!nft) throw new Error("Personaje no encontrado en la base de datos.");
+    
     renderizarHero(nft);
     
-    // Unir equipamiento normal y tradeable para el inventario
+    // Preparar inventario
     const equip = Array.isArray(nft.equipment) ? nft.equipment : [];
     const tradeables = Array.isArray(nft.tradeable_equipment) ? nft.tradeable_equipment.map(i => ({...i, isTradeable: true})) : [];
-    
-    // Marcar los normales como bindeados
     const normales = equip.map(i => ({...i, isTradeable: false}));
     
     itemsInventario = [...tradeables, ...normales];
+    
     document.getElementById('inventory-filters').style.display = 'flex';
     renderizarInventario(itemsInventario);
 
   } catch (err) {
-    document.getElementById('hero-container').innerHTML = `<div class="empty-state" style="color:var(--accent-red)">Error al cargar: ${err.message}</div>`;
+    console.error(err);
+    document.getElementById('hero-container').innerHTML = `<div class="empty-state" style="color:var(--accent-red)">Error: ${err.message}</div>`;
   }
 }
 
 function renderizarHero(nft) {
-  const rarity = getRarityInfo(nft.class); // Inferir rareza de la clase del personaje
+  const rarity = getRarityInfo(nft.class); 
   
   const heroHtml = `
     <div class="hero-card">
@@ -312,10 +321,10 @@ function renderizarHero(nft) {
       <div class="hero-actions">
         <div>
           <div class="stat-label">Precio</div>
-          <div class="price-wemix text-legendary">${nft.price_wemix ? Number(nft.price_wemix).toLocaleString('en-US') : 'N/A'} <span>WEMIX</span></div>
+          <div class="price-wemix text-legendary">${nft.price_wemix ? Number(nft.price_wemix).toLocaleString('en-US') : 'Consultar'} <span>WEMIX</span></div>
         </div>
-        <a href="${nft.url || '#'}" target="_blank" class="btn" style="background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan);">Comprar en WEMIX PLAY</a>
-        <button class="btn" onclick="navigator.clipboard.writeText('${nft.id}')">Copiar ID del NFT</button>
+        <a href="${nft.url || '#'}" target="_blank" class="btn" style="background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan);">Ver en WEMIX PLAY</a>
+        <button class="btn" onclick="copiarID('${nft.id || ''}')">Copiar ID</button>
       </div>
     </div>
   `;
@@ -331,34 +340,41 @@ function renderizarInventario(items) {
   }
 
   grid.innerHTML = items.map(item => {
-    // Si el ítem tiene un campo "grade", lo usamos, sino asumimos por defecto.
     const rarity = getRarityInfo(item.grade || item.tier || 1); 
     const isTrade = item.isTradeable;
 
     return `
       <div class="card border-${rarity.class}">
         <div class="card-img">
-          <img src="${item.icon || ''}" alt="${item.name}" onerror="this.style.display='none'">
+          <img src="${item.icon || ''}" alt="${item.name || 'Item'}" onerror="this.style.display='none'">
           <div class="tag-rarity border-${rarity.class} text-${rarity.class}">${rarity.label}</div>
           <div class="tag-trade ${isTrade ? 'is-tradeable' : 'is-bound'}">${isTrade ? 'TRADEABLE' : 'BOUND'}</div>
         </div>
         <div class="card-body">
           <div class="card-title">${item.name || 'Ítem desconocido'}</div>
-          <div class="card-stats">Enhance: +${item.enhance || '0'} | Tipo: Equipamiento</div>
+          <div class="card-stats">Enhance: +${item.enhance || '0'} | Equipamiento</div>
         </div>
       </div>
     `;
   }).join('');
 }
 
-function filtrar(tipo) {
-  // Manejo de botones activos
+// CORRECCIÓN APLICADA AQUÍ: Recibe el botón que disparó el evento
+function filtrar(tipo, btnElement) {
+  // Quitar la clase 'active' de todos los botones
   document.querySelectorAll('.status-tabs button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  // Añadir la clase 'active' al botón clickeado
+  btnElement.classList.add('active');
 
   if (tipo === 'all') renderizarInventario(itemsInventario);
   else if (tipo === 'tradeable') renderizarInventario(itemsInventario.filter(i => i.isTradeable));
   else if (tipo === 'bound') renderizarInventario(itemsInventario.filter(i => !i.isTradeable));
+}
+
+function copiarID(idStr) {
+  navigator.clipboard.writeText(idStr).then(() => {
+    alert("ID copiado al portapapeles: " + idStr);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', cargarDetalle);
