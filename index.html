@@ -29,6 +29,7 @@
 
   .wrap { max-width: 1400px; margin: 0 auto; }
 
+  /* ---- Header ---- */
   .top-bar {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -43,7 +44,7 @@
   }
 
   .brand { display: flex; align-items: baseline; gap: 10px; }
-  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; color: var(--text-main); }
+  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
   .brand span { font-size: 12px; color: var(--text-muted); }
 
   .status-tabs { display: flex; gap: 6px; }
@@ -56,8 +57,6 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
   }
   .status-tabs button.active {
     background: rgba(245, 158, 11, 0.12);
@@ -73,6 +72,7 @@
     margin-left: 6px;
   }
 
+  /* ---- Controls ---- */
   .controls {
     display: flex;
     flex-wrap: wrap;
@@ -101,7 +101,7 @@
   }
   .search-box input::placeholder { color: var(--text-muted); }
 
-  select {
+  select, .filter-btn {
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text-main);
@@ -110,118 +110,127 @@
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
-    outline: none;
   }
-  select:focus { border-color: var(--accent-cyan); }
+  .filter-btn { color: var(--accent-gold); font-weight: 600; border-color: rgba(245,158,11,0.4); }
 
+  /* ---- Grid ---- */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
   }
 
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
-    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, border-color 0.15s ease;
   }
   .card:hover {
     transform: translateY(-3px);
     border-color: var(--accent-cyan);
-    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.12);
+  }
+  .card:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
   }
 
   .card-img {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 130px;
     background: #111827;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border-bottom: 1px solid var(--border);
   }
   .card-img img { width: 100%; height: 100%; object-fit: contain; }
 
   .tag-class {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    background: rgba(0,0,0,0.8);
+    top: 6px;
+    left: 6px;
+    background: rgba(0,0,0,0.75);
     color: var(--accent-cyan);
     font-size: 10px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 2px 7px;
+    border-radius: 5px;
     border: 1px solid rgba(6,182,212,0.35);
-    text-transform: uppercase;
+  }
+
+  .tag-auction {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(245,158,11,0.15);
+    color: var(--accent-gold);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid rgba(245,158,11,0.4);
   }
 
   .tag-trade {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    bottom: 6px;
+    right: 6px;
     background: rgba(59,130,246,0.85);
     color: #fff;
     font-size: 10px;
     font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 2px 7px;
+    border-radius: 5px;
   }
 
   .equip-strip {
     display: flex;
-    gap: 4px;
-    padding: 8px 12px 0;
+    gap: 3px;
+    padding: 6px 12px 0;
     flex-wrap: wrap;
   }
   .equip-slot {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
     background: #111827;
     border: 1px solid var(--border);
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .equip-slot img { width: 100%; height: 100%; object-fit: contain; }
-  .equip-slot.trade { border: 1px solid var(--accent-cyan); box-shadow: 0 0 5px rgba(6,182,212,0.6); }
+  .equip-slot.trade { border: 1px solid var(--accent-cyan); box-shadow: 0 0 4px rgba(6,182,212,0.6); }
 
-  .card-body { padding: 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+  .card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
   .card-title {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--text-main);
   }
   .card-stats {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    gap: 8px;
   }
   .card-stats strong { color: var(--text-main); }
-  .card-server { font-size: 11px; color: var(--text-muted); }
+  .card-server { font-size: 10px; color: var(--text-muted); }
 
   .card-footer {
-    padding: 10px 12px 14px;
+    padding: 8px 12px 12px;
     border-top: 1px solid var(--border);
     margin-top: auto;
-    background: rgba(0,0,0,0.15);
   }
-  .price-wemix { font-size: 15px; font-weight: 800; color: var(--accent-gold); }
+  .price-wemix { font-size: 13px; font-weight: 700; color: var(--accent-gold); }
+  .price-usd { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
   .empty-state, .loading-state {
     grid-column: 1 / -1;
@@ -240,10 +249,11 @@
 </head>
 <body>
 <div class="wrap">
+
   <div class="top-bar">
     <div class="brand">
       <h1>MIR4 NFT Marketplace</h1>
-      <span id="subtitle">Conectando con el backend…</span>
+      <span id="subtitle">Conectando con WEMIX PLAY…</span>
     </div>
     <div class="status-tabs">
       <button class="active">🔥 En venta<span class="count" id="total-count">0</span></button>
@@ -268,8 +278,9 @@
   </div>
 
   <div class="grid" id="grid">
-    <div class="loading-state">Cargando personajes…</div>
+    <div class="loading-state">Cargando personajes desde WEMIX PLAY…</div>
   </div>
+
 </div>
 
 <script>
@@ -282,10 +293,8 @@ async function cargarMercado() {
 
   try {
     const res = await fetch(URL_API);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
     const data = await res.json();
-    TODOS = Array.isArray(data.items) ? data.items : [];
+    TODOS = data.items || [];
 
     document.getElementById('total-count').innerText = TODOS.length;
     subtitle.innerText = data.diagnostico || `${TODOS.length} personajes disponibles`;
@@ -294,7 +303,7 @@ async function cargarMercado() {
     aplicarFiltros();
   } catch (err) {
     console.error(err);
-    grid.innerHTML = `<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando.</div>`;
+    grid.innerHTML = `<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando (los servicios gratuitos de Render tardan ~1 min en despertar) — recarga en un momento.</div>`;
     subtitle.innerText = "Error de conexión";
   }
 }
@@ -302,8 +311,6 @@ async function cargarMercado() {
 function poblarFiltroClases(lista) {
   const select = document.getElementById('classFilter');
   const clases = [...new Set(lista.map(n => n.class).filter(Boolean))].sort();
-
-  select.innerHTML = '<option value="">Todas las clases</option>';
   clases.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c;
@@ -313,12 +320,12 @@ function poblarFiltroClases(lista) {
 }
 
 function aplicarFiltros() {
-  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const query = document.getElementById('searchInput').value.toLowerCase();
   const claseSel = document.getElementById('classFilter').value;
   const orden = document.getElementById('sortBy').value;
 
   let filtrados = TODOS.filter(n => {
-    const texto = `${n.name || ''} ${n.class || ''} ${n.server || ''}`.toLowerCase();
+    const texto = `${n.name} ${n.class} ${n.server}`.toLowerCase();
     const coincideTexto = texto.includes(query);
     const coincideClase = !claseSel || n.class === claseSel;
     return coincideTexto && coincideClase;
@@ -332,22 +339,6 @@ function aplicarFiltros() {
   renderizar(filtrados);
 }
 
-function escapeHtml(text) {
-  return String(text)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}
-
-function formatNumber(value) {
-  if (value === null || value === undefined || value === '') return 'N/A';
-  const n = Number(value);
-  if (Number.isNaN(n)) return String(value);
-  return n.toLocaleString('en-US');
-}
-
 function renderizar(lista) {
   const grid = document.getElementById('grid');
 
@@ -357,70 +348,44 @@ function renderizar(lista) {
   }
 
   grid.innerHTML = lista.map(nft => {
-    const safeName = escapeHtml(nft.name || 'Sin nombre');
-    const safeClass = escapeHtml(nft.class || 'N/A');
-    const safeServer = escapeHtml(nft.server || 'N/A');
-    const safeImage = escapeHtml(nft.image || 'https://www.xdraco.com/nft/assets/img/common/thumb-default.png');
-    const safeUrl = escapeHtml(nft.url || '#');
+    const tradeCount = nft.tradable_item_count || 0;
+    const tradeTag = tradeCount > 0 ? `<span class="tag-trade">🔵 ${tradeCount} Trade</span>` : '';
 
-    const levelText = nft.level ?? 'N/A';
-    const powerText = nft.power ? formatNumber(nft.power) : 'N/A';
-    const priceText = nft.price_wemix !== undefined && nft.price_wemix !== null
-      ? formatNumber(nft.price_wemix)
-      : 'Consultar';
-
-    const tradeables = Array.isArray(nft.tradeable_equipment) ? nft.tradeable_equipment : [];
-    const equipment = Array.isArray(nft.equipment) ? nft.equipment : [];
-
-    const equipBadges = equipment.map(slot => {
-      const cls = slot.tradeable ? 'equip-slot trade' : 'equip-slot';
-      return `
-        <div class="${cls}" title="${escapeHtml(slot.name || 'Slot')}">
-          ${slot.icon ? `<img src="${escapeHtml(slot.icon)}" alt="">` : ''}
-        </div>
-      `;
-    }).join('');
-
-    const tradeableBadges = tradeables.map(slot => `
-      <div class="equip-slot trade" title="${escapeHtml(slot.name || 'Tradeable')}">
-        ${slot.icon ? `<img src="${escapeHtml(slot.icon)}" alt="">` : ''}
-      </div>
-    `).join('');
+    const equipo = nft.equipment || [];
+    const equipStrip = equipo.length
+      ? `<div class="equip-strip">` + equipo.map(e => `
+          <div class="equip-slot ${e.tradeable ? 'trade' : ''}" title="${e.name}${e.tradeable ? ' (Trade)' : ''}">
+            <img src="${e.icon}" alt="${e.name}" loading="lazy" onerror="this.style.opacity=0">
+          </div>
+        `).join('') + `</div>`
+      : '';
 
     return `
-      <a class="card" href="${safeUrl}" target="_blank" rel="noopener">
+      <a class="card" href="${nft.url}" target="_blank" rel="noopener">
         <div class="card-img">
-          <img src="${safeImage}" alt="${safeName}" loading="lazy">
-          <div class="tag-class">${safeClass}</div>
-          <div class="tag-trade">${tradeables.length > 0 ? 'TRADEABLE' : 'NO TRADEABLE'}</div>
+          <span class="tag-class">${nft.class || 'N/A'}</span>
+          ${tradeTag}
+          <img src="${nft.image}" alt="${nft.name}" loading="lazy"
+               onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
         </div>
-
-        <div class="equip-strip">
-          ${equipBadges}
-        </div>
-
-        <div class="equip-strip" style="padding-top:6px;">
-          ${tradeableBadges}
-        </div>
-
+        ${equipStrip}
         <div class="card-body">
-          <div class="card-title">${safeName}</div>
+          <div class="card-title" title="${nft.name}">${nft.name}</div>
           <div class="card-stats">
-            <span>Nivel: <strong>${levelText}</strong></span>
-            <span>Poder: <strong>${powerText}</strong></span>
+            <span>Lv. <strong>${nft.level ?? '—'}</strong></span>
+            <span>PS: <strong>${(nft.power || 0).toLocaleString()}</strong></span>
           </div>
-          <div class="card-server">Servidor: ${safeServer}</div>
+          <div class="card-server">${nft.server || ''}</div>
         </div>
-
         <div class="card-footer">
-          <div class="price-wemix">${priceText} WEMIX</div>
+          <div class="price-wemix">${(nft.price_wemix ?? 0).toLocaleString()} WEMIX</div>
         </div>
       </a>
     `;
   }).join('');
 }
 
-document.addEventListener('DOMContentLoaded', cargarMercado);
+cargarMercado();
 </script>
 </body>
 </html>
