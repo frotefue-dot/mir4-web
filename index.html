@@ -162,9 +162,10 @@
   .equip-slot.g3 { border-color: var(--g3); }
   .equip-slot.g4 { border-color: var(--g4); }
   .equip-slot.g5 { border-color: var(--g5); }
+  /* Se eliminó el border-color forzado para que el marco herede el color del grado (.g1, .g2, etc) */
   .equip-slot.trade {
-    border-color: var(--accent-cyan) !important;
-    box-shadow: 0 0 0 2px rgba(6,182,212,0.5), 0 0 8px rgba(6,182,212,0.6);
+    /* Opcional: dejamos un brillo sutil cyan para resaltar que es tradeable, si no lo quieres, puedes borrar el box-shadow */
+    box-shadow: 0 0 6px rgba(6,182,212,0.4);
   }
   .equip-slot.trade::after {
     content: 'T';
