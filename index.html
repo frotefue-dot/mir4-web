@@ -9,13 +9,18 @@
   :root {
     --bg-main: #07090e;
     --bg-card: #0d111a;
-    --bg-card-hover: #131b2e;
     --border: #1e293b;
     --accent-gold: #f59e0b;
     --accent-cyan: #06b6d4;
     --accent-red: #ef4444;
     --text-main: #f8fafc;
     --text-muted: #8892a6;
+
+    --g1: #9ca3af;
+    --g2: #22c55e;
+    --g3: #3b82f6;
+    --g4: #a855f7;
+    --g5: #f59e0b;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,9 +32,8 @@
     padding: 18px;
   }
 
-  .wrap { max-width: 1400px; margin: 0 auto; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
 
-  /* ---- Header ---- */
   .top-bar {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -42,46 +46,17 @@
     gap: 14px;
     margin-bottom: 14px;
   }
-
-  .brand { display: flex; align-items: baseline; gap: 10px; }
-  .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
+  .brand h1 { font-size: 18px; font-weight: 700; }
   .brand span { font-size: 12px; color: var(--text-muted); }
 
-  .status-tabs { display: flex; gap: 6px; }
-  .status-tabs button {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .status-tabs button.active {
-    background: rgba(245, 158, 11, 0.12);
-    border-color: var(--accent-gold);
-    color: var(--accent-gold);
-  }
-  .status-tabs .count {
-    background: var(--accent-red);
-    color: #fff;
-    font-size: 11px;
-    padding: 1px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-  }
-
-  /* ---- Controls ---- */
   .controls {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
   }
-
   .search-box {
-    flex: 1 1 260px;
+    flex: 1 1 220px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -91,13 +66,8 @@
     padding: 10px 14px;
   }
   .search-box input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-main);
-    font-family: inherit;
-    font-size: 14px;
-    width: 100%;
+    background: transparent; border: none; outline: none;
+    color: var(--text-main); font-family: inherit; font-size: 14px; width: 100%;
   }
   .search-box input::placeholder { color: var(--text-muted); }
 
@@ -112,139 +82,110 @@
     cursor: pointer;
   }
   .filter-btn { color: var(--accent-gold); font-weight: 600; border-color: rgba(245,158,11,0.4); }
+  .filter-btn.active { background: rgba(245,158,11,0.12); }
 
-  /* ---- Grid ---- */
+  .advanced-panel {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .advanced-panel.open { display: flex; }
+  .range-group { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--text-muted); }
+  .range-group .inputs { display: flex; gap: 6px; align-items: center; }
+  .range-group input {
+    width: 90px; background: var(--bg-main); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 8px; color: var(--text-main); font-family: inherit; font-size: 12px;
+  }
+  .apply-btn {
+    background: var(--accent-cyan); color: #07090e; font-weight: 700;
+    border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; align-self: flex-end;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+    margin-bottom: 16px;
   }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
 
   .card {
     background: var(--bg-card);
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.15s ease;
   }
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent-cyan);
-  }
-  .card:focus-visible {
-    outline: 2px solid var(--accent-cyan);
-    outline-offset: 2px;
-  }
+  .card:hover { transform: translateY(-3px); }
+  .card.grade-1 { border-color: var(--g1); }
+  .card.grade-2 { border-color: var(--g2); box-shadow: 0 0 6px rgba(34,197,94,0.25); }
+  .card.grade-3 { border-color: var(--g3); box-shadow: 0 0 6px rgba(59,130,246,0.3); }
+  .card.grade-4 { border-color: var(--g4); box-shadow: 0 0 8px rgba(168,85,247,0.35); }
+  .card.grade-5 { border-color: var(--g5); box-shadow: 0 0 10px rgba(245,158,11,0.4); }
 
   .card-img {
-    position: relative;
-    width: 100%;
-    height: 130px;
-    background: #111827;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    position: relative; width: 100%; height: 130px; background: #111827;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
   .card-img img { width: 100%; height: 100%; object-fit: contain; }
 
   .tag-class {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    background: rgba(0,0,0,0.75);
-    color: var(--accent-cyan);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 5px;
-    border: 1px solid rgba(6,182,212,0.35);
+    position: absolute; top: 6px; left: 6px;
+    background: rgba(0,0,0,0.75); color: var(--accent-cyan);
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px;
   }
-
-  .tag-auction {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: rgba(245,158,11,0.15);
-    color: var(--accent-gold);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 5px;
-    border: 1px solid rgba(245,158,11,0.4);
-  }
-
   .tag-trade {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    background: rgba(59,130,246,0.85);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 5px;
+    position: absolute; bottom: 6px; right: 6px;
+    background: rgba(59,130,246,0.9); color: #fff;
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px;
   }
 
-  .equip-strip {
-    display: flex;
-    gap: 3px;
-    padding: 6px 12px 0;
-    flex-wrap: wrap;
-  }
+  .equip-strip { display: flex; gap: 3px; padding: 6px 10px 0; flex-wrap: wrap; }
   .equip-slot {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    background: #111827;
-    border: 1px solid var(--border);
-    overflow: hidden;
+    width: 18px; height: 18px; border-radius: 3px; background: #111827;
+    border: 1.5px solid var(--border); overflow: hidden; position: relative;
   }
   .equip-slot img { width: 100%; height: 100%; object-fit: contain; }
-  .equip-slot.trade { border: 1px solid var(--accent-cyan); box-shadow: 0 0 4px rgba(6,182,212,0.6); }
+  .equip-slot.g1 { border-color: var(--g1); }
+  .equip-slot.g2 { border-color: var(--g2); }
+  .equip-slot.g3 { border-color: var(--g3); }
+  .equip-slot.g4 { border-color: var(--g4); }
+  .equip-slot.g5 { border-color: var(--g5); }
+  .equip-slot.trade::after {
+    content: ''; position: absolute; top: 1px; right: 1px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent-cyan);
+  }
 
-  .card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
-  .card-title {
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-stats {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
+  .card-body { padding: 8px 10px; display: flex; flex-direction: column; gap: 5px; flex-grow: 1; }
+  .card-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
   .card-stats strong { color: var(--text-main); }
   .card-server { font-size: 10px; color: var(--text-muted); }
 
-  .card-footer {
-    padding: 8px 12px 12px;
-    border-top: 1px solid var(--border);
-    margin-top: auto;
-  }
+  .card-footer { padding: 6px 10px 10px; border-top: 1px solid var(--border); margin-top: auto; }
   .price-wemix { font-size: 13px; font-weight: 700; color: var(--accent-gold); }
-  .price-usd { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-  .empty-state, .loading-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
+  .empty-state, .loading-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 14px; }
   .error-state { color: var(--accent-red); }
 
-  @media (max-width: 480px) {
-    .top-bar { flex-direction: column; align-items: flex-start; }
-    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 30px; }
+  .pagination button {
+    background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main);
+    border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
   }
+  .pagination button.active { background: var(--accent-cyan); color: #07090e; font-weight: 700; border-color: var(--accent-cyan); }
+  .pagination button:disabled { opacity: 0.35; cursor: default; }
+  .pagination .dots { color: var(--text-muted); padding: 0 4px; }
 </style>
 </head>
 <body>
@@ -253,16 +194,13 @@
   <div class="top-bar">
     <div class="brand">
       <h1>MIR4 NFT Marketplace</h1>
-      <span id="subtitle">Conectando con WEMIX PLAY…</span>
-    </div>
-    <div class="status-tabs">
-      <button class="active">🔥 En venta<span class="count" id="total-count">0</span></button>
+      <span id="subtitle">Conectando con el servidor…</span>
     </div>
   </div>
 
   <div class="controls">
     <div class="search-box">
-      <span>🔍</span>
+      <span>Buscar</span>
       <input type="text" id="searchInput" placeholder="Buscar por nombre, clase o servidor…" oninput="aplicarFiltros()">
     </div>
     <select id="sortBy" onchange="aplicarFiltros()">
@@ -272,117 +210,194 @@
       <option value="price-desc">Precio: mayor a menor</option>
       <option value="level-desc">Nivel: mayor a menor</option>
     </select>
-    <select id="classFilter" onchange="aplicarFiltros()">
-      <option value="">Todas las clases</option>
-    </select>
+    <select id="classFilter" onchange="aplicarFiltros()"><option value="">Todas las clases</option></select>
+    <select id="serverFilter" onchange="aplicarFiltros()"><option value="">Todos los servidores</option></select>
+    <button class="filter-btn" id="advToggle" onclick="toggleAdvanced()">Avanzado</button>
   </div>
 
-  <div class="grid" id="grid">
-    <div class="loading-state">Cargando personajes desde WEMIX PLAY…</div>
+  <div class="advanced-panel" id="advancedPanel">
+    <div class="range-group">
+      <span>Poder (PS)</span>
+      <div class="inputs">
+        <input type="number" id="powerMin" placeholder="Min">
+        <input type="number" id="powerMax" placeholder="Max">
+      </div>
+    </div>
+    <div class="range-group">
+      <span>Precio (WEMIX)</span>
+      <div class="inputs">
+        <input type="number" id="priceMin" placeholder="Min">
+        <input type="number" id="priceMax" placeholder="Max">
+      </div>
+    </div>
+    <div class="range-group">
+      <span>Nivel</span>
+      <div class="inputs">
+        <input type="number" id="lvlMin" placeholder="Min">
+        <input type="number" id="lvlMax" placeholder="Max">
+      </div>
+    </div>
+    <div class="range-group">
+      <span>Solo con items Trade</span>
+      <div class="inputs">
+        <select id="onlyTrade"><option value="">Todos</option><option value="1">Si</option></select>
+      </div>
+    </div>
+    <button class="apply-btn" onclick="aplicarFiltros()">Aplicar</button>
   </div>
+
+  <div class="grid" id="grid"><div class="loading-state">Cargando personajes...</div></div>
+  <div class="pagination" id="pagination"></div>
 
 </div>
 
 <script>
 const URL_API = "https://mir4-backend.onrender.com/api/nfts";
+const PAGE_SIZE = 25;
 let TODOS = [];
+let FILTRADOS = [];
+let PAGINA_ACTUAL = 1;
 
 async function cargarMercado() {
   const grid = document.getElementById('grid');
   const subtitle = document.getElementById('subtitle');
-
   try {
     const res = await fetch(URL_API);
     const data = await res.json();
     TODOS = data.items || [];
-
-    document.getElementById('total-count').innerText = TODOS.length;
-    subtitle.innerText = data.diagnostico || `${TODOS.length} personajes disponibles`;
-
-    poblarFiltroClases(TODOS);
+    subtitle.innerText = data.diagnostico || (TODOS.length + " personajes disponibles");
+    poblarSelect('classFilter', [...new Set(TODOS.map(n => n.class).filter(Boolean))].sort());
+    poblarSelect('serverFilter', [...new Set(TODOS.map(n => n.server).filter(Boolean))].sort());
     aplicarFiltros();
   } catch (err) {
     console.error(err);
-    grid.innerHTML = `<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando (los servicios gratuitos de Render tardan ~1 min en despertar) — recarga en un momento.</div>`;
-    subtitle.innerText = "Error de conexión";
+    grid.innerHTML = '<div class="empty-state error-state">No se pudo conectar con el servidor. Puede estar iniciando (los servicios gratuitos de Render tardan ~1 min) - recarga en un momento.</div>';
+    subtitle.innerText = "Error de conexion";
   }
 }
 
-function poblarFiltroClases(lista) {
-  const select = document.getElementById('classFilter');
-  const clases = [...new Set(lista.map(n => n.class).filter(Boolean))].sort();
-  clases.forEach(c => {
+function poblarSelect(id, valores) {
+  const select = document.getElementById(id);
+  valores.forEach(v => {
     const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
+    opt.value = v; opt.textContent = v;
     select.appendChild(opt);
   });
+}
+
+function toggleAdvanced() {
+  document.getElementById('advancedPanel').classList.toggle('open');
+  document.getElementById('advToggle').classList.toggle('active');
 }
 
 function aplicarFiltros() {
   const query = document.getElementById('searchInput').value.toLowerCase();
   const claseSel = document.getElementById('classFilter').value;
+  const serverSel = document.getElementById('serverFilter').value;
   const orden = document.getElementById('sortBy').value;
+  const powerMin = parseFloat(document.getElementById('powerMin').value) || null;
+  const powerMax = parseFloat(document.getElementById('powerMax').value) || null;
+  const priceMin = parseFloat(document.getElementById('priceMin').value) || null;
+  const priceMax = parseFloat(document.getElementById('priceMax').value) || null;
+  const lvlMin = parseFloat(document.getElementById('lvlMin').value) || null;
+  const lvlMax = parseFloat(document.getElementById('lvlMax').value) || null;
+  const onlyTrade = document.getElementById('onlyTrade').value;
 
-  let filtrados = TODOS.filter(n => {
-    const texto = `${n.name} ${n.class} ${n.server}`.toLowerCase();
-    const coincideTexto = texto.includes(query);
-    const coincideClase = !claseSel || n.class === claseSel;
-    return coincideTexto && coincideClase;
+  FILTRADOS = TODOS.filter(n => {
+    const texto = (n.name + " " + n.class + " " + n.server).toLowerCase();
+    if (!texto.includes(query)) return false;
+    if (claseSel && n.class !== claseSel) return false;
+    if (serverSel && n.server !== serverSel) return false;
+    if (powerMin !== null && (n.power || 0) < powerMin) return false;
+    if (powerMax !== null && (n.power || 0) > powerMax) return false;
+    if (priceMin !== null && (n.price_wemix || 0) < priceMin) return false;
+    if (priceMax !== null && (n.price_wemix || 0) > priceMax) return false;
+    if (lvlMin !== null && (n.level || 0) < lvlMin) return false;
+    if (lvlMax !== null && (n.level || 0) > lvlMax) return false;
+    if (onlyTrade === '1' && !(n.tradable_item_count > 0)) return false;
+    return true;
   });
 
-  if (orden === 'power-desc') filtrados.sort((a, b) => (b.power || 0) - (a.power || 0));
-  else if (orden === 'price-asc') filtrados.sort((a, b) => (a.price_wemix ?? Infinity) - (b.price_wemix ?? Infinity));
-  else if (orden === 'price-desc') filtrados.sort((a, b) => (b.price_wemix ?? -1) - (a.price_wemix ?? -1));
-  else if (orden === 'level-desc') filtrados.sort((a, b) => (b.level || 0) - (a.level || 0));
+  if (orden === 'power-desc') FILTRADOS.sort((a, b) => (b.power || 0) - (a.power || 0));
+  else if (orden === 'price-asc') FILTRADOS.sort((a, b) => (a.price_wemix ?? Infinity) - (b.price_wemix ?? Infinity));
+  else if (orden === 'price-desc') FILTRADOS.sort((a, b) => (b.price_wemix ?? -1) - (a.price_wemix ?? -1));
+  else if (orden === 'level-desc') FILTRADOS.sort((a, b) => (b.level || 0) - (a.level || 0));
 
-  renderizar(filtrados);
+  PAGINA_ACTUAL = 1;
+  renderizarPagina();
 }
 
-function renderizar(lista) {
+function renderizarPagina() {
   const grid = document.getElementById('grid');
-
-  if (lista.length === 0) {
-    grid.innerHTML = `<div class="empty-state">Ningún personaje coincide con esa búsqueda.</div>`;
+  if (FILTRADOS.length === 0) {
+    grid.innerHTML = '<div class="empty-state">Ningun personaje coincide con esa busqueda.</div>';
+    document.getElementById('pagination').innerHTML = '';
     return;
   }
 
-  grid.innerHTML = lista.map(nft => {
+  const totalPaginas = Math.ceil(FILTRADOS.length / PAGE_SIZE);
+  const inicio = (PAGINA_ACTUAL - 1) * PAGE_SIZE;
+  const lote = FILTRADOS.slice(inicio, inicio + PAGE_SIZE);
+
+  grid.innerHTML = lote.map(function(nft) {
+    const grade = nft.grade || 0;
     const tradeCount = nft.tradable_item_count || 0;
-    const tradeTag = tradeCount > 0 ? `<span class="tag-trade">🔵 ${tradeCount} Trade</span>` : '';
+    const tradeTag = tradeCount > 0 ? ('<span class="tag-trade">' + tradeCount + ' Trade</span>') : '';
 
     const equipo = nft.equipment || [];
-    const equipStrip = equipo.length
-      ? `<div class="equip-strip">` + equipo.map(e => `
-          <div class="equip-slot ${e.tradeable ? 'trade' : ''}" title="${e.name}${e.tradeable ? ' (Trade)' : ''}">
-            <img src="${e.icon}" alt="${e.name}" loading="lazy" onerror="this.style.opacity=0">
-          </div>
-        `).join('') + `</div>`
-      : '';
+    let equipStrip = '';
+    if (equipo.length) {
+      equipStrip = '<div class="equip-strip">' + equipo.map(function(e) {
+        const cls = 'equip-slot g' + (e.grade || 0) + (e.tradeable ? ' trade' : '');
+        const title = e.name + (e.tradeable ? ' (Trade)' : '');
+        return '<div class="' + cls + '" title="' + title + '"><img src="' + e.icon + '" alt="' + e.name + '" loading="lazy" onerror="this.style.opacity=0"></div>';
+      }).join('') + '</div>';
+    }
 
-    return `
-      <a class="card" href="${nft.url}" target="_blank" rel="noopener">
-        <div class="card-img">
-          <span class="tag-class">${nft.class || 'N/A'}</span>
-          ${tradeTag}
-          <img src="${nft.image}" alt="${nft.name}" loading="lazy"
-               onerror="this.src='https://www.xdraco.com/nft/assets/img/common/thumb-default.png'">
-        </div>
-        ${equipStrip}
-        <div class="card-body">
-          <div class="card-title" title="${nft.name}">${nft.name}</div>
-          <div class="card-stats">
-            <span>Lv. <strong>${nft.level ?? '—'}</strong></span>
-            <span>PS: <strong>${(nft.power || 0).toLocaleString()}</strong></span>
-          </div>
-          <div class="card-server">${nft.server || ''}</div>
-        </div>
-        <div class="card-footer">
-          <div class="price-wemix">${(nft.price_wemix ?? 0).toLocaleString()} WEMIX</div>
-        </div>
-      </a>
-    `;
+    return '' +
+      '<a class="card grade-' + grade + '" href="' + nft.url + '" target="_blank" rel="noopener">' +
+        '<div class="card-img">' +
+          '<span class="tag-class">' + (nft.class || 'N/A') + '</span>' +
+          tradeTag +
+          '<img src="' + nft.image + '" alt="' + nft.name + '" loading="lazy" onerror="this.src=\'https://www.xdraco.com/nft/assets/img/common/thumb-default.png\'">' +
+        '</div>' +
+        equipStrip +
+        '<div class="card-body">' +
+          '<div class="card-title" title="' + nft.name + '">' + nft.name + '</div>' +
+          '<div class="card-stats"><span>Lv. <strong>' + (nft.level ?? '-') + '</strong></span><span>PS: <strong>' + (nft.power || 0).toLocaleString() + '</strong></span></div>' +
+          '<div class="card-server">' + (nft.server || '') + '</div>' +
+        '</div>' +
+        '<div class="card-footer"><div class="price-wemix">' + (nft.price_wemix ?? 0).toLocaleString() + ' WEMIX</div></div>' +
+      '</a>';
   }).join('');
+
+  renderizarPaginacion(totalPaginas);
+}
+
+function renderizarPaginacion(totalPaginas) {
+  const cont = document.getElementById('pagination');
+  if (totalPaginas <= 1) { cont.innerHTML = ''; return; }
+
+  let botones = [];
+  botones.push('<button ' + (PAGINA_ACTUAL === 1 ? 'disabled' : '') + ' onclick="irAPagina(' + (PAGINA_ACTUAL - 1) + ')">Anterior</button>');
+
+  const ventana = 2;
+  for (let p = 1; p <= totalPaginas; p++) {
+    if (p === 1 || p === totalPaginas || (p >= PAGINA_ACTUAL - ventana && p <= PAGINA_ACTUAL + ventana)) {
+      botones.push('<button class="' + (p === PAGINA_ACTUAL ? 'active' : '') + '" onclick="irAPagina(' + p + ')">' + p + '</button>');
+    } else if (p === PAGINA_ACTUAL - ventana - 1 || p === PAGINA_ACTUAL + ventana + 1) {
+      botones.push('<span class="dots">...</span>');
+    }
+  }
+
+  botones.push('<button ' + (PAGINA_ACTUAL === totalPaginas ? 'disabled' : '') + ' onclick="irAPagina(' + (PAGINA_ACTUAL + 1) + ')">Siguiente</button>');
+  cont.innerHTML = botones.join('');
+}
+
+function irAPagina(p) {
+  PAGINA_ACTUAL = p;
+  renderizarPagina();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 cargarMercado();
