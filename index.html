@@ -115,74 +115,106 @@
   @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
 
+  /* --- ESTILO TIPO ANALYSIS4NFT --- */
   .card {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: 10px;
+    background: #0f131b;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
-    transition: transform 0.15s ease;
+    transition: all 0.2s ease;
+    position: relative;
   }
-  .card:hover { transform: translateY(-3px); }
-  .card.grade-1 { border-color: var(--g1); }
-  .card.grade-2 { border-color: var(--g2); box-shadow: 0 0 6px rgba(34,197,94,0.25); }
-  .card.grade-3 { border-color: var(--g3); box-shadow: 0 0 6px rgba(59,130,246,0.3); }
-  .card.grade-4 { border-color: var(--g4); box-shadow: 0 0 8px rgba(168,85,247,0.35); }
-  .card.grade-5 { border-color: var(--g5); box-shadow: 0 0 10px rgba(245,158,11,0.4); }
+  .card:hover {
+    transform: translateY(-4px);
+    z-index: 10;
+  }
+  /* Brillo al pasar el cursor dependiendo del grado del NFT */
+  .card.grade-1:hover { border-color: var(--g1); box-shadow: 0 6px 15px rgba(156,163,175,0.15); }
+  .card.grade-2:hover { border-color: var(--g2); box-shadow: 0 6px 15px rgba(34,197,94,0.15); }
+  .card.grade-3:hover { border-color: var(--g3); box-shadow: 0 6px 15px rgba(59,130,246,0.2); }
+  .card.grade-4:hover { border-color: var(--g4); box-shadow: 0 6px 15px rgba(168,85,247,0.25); }
+  .card.grade-5:hover { border-color: var(--g5); box-shadow: 0 6px 15px rgba(245,158,11,0.3); }
 
-  .card-img {
-    position: relative; width: 100%; height: 190px; background: #111827;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  .card-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: #000;
+    overflow: hidden;
   }
-  .card-img img { width: 100%; height: 100%; object-fit: contain; }
+  .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  /* Degradado oscuro en la parte inferior de la imagen */
+  .card-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to top, #0f131b 0%, transparent 100%);
+  }
 
-  .tag-class {
-    position: absolute; top: 6px; left: 6px;
-    background: rgba(0,0,0,0.75); color: var(--accent-cyan);
-    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px;
+  .overlay-top {
+    position: absolute; top: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; z-index: 2;
   }
-  .tag-trade {
-    position: absolute; bottom: 8px; right: 8px;
-    background: var(--accent-cyan); color: #07090e;
-    font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 6px;
-    box-shadow: 0 0 8px rgba(6,182,212,0.7);
+  .badge {
+    background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 4px 8px; font-size: 11px; font-weight: 600;
   }
+  .badge-server { color: var(--text-muted); }
+  .badge-class { color: var(--accent-cyan); }
+  .badge-trade { background: rgba(6,182,212,0.15); border-color: var(--accent-cyan); color: var(--accent-cyan); margin-left: 5px; }
 
-  .equip-strip { display: flex; gap: 5px; padding: 10px 12px 0; flex-wrap: wrap; }
-  .equip-slot {
-    width: 30px; height: 30px; border-radius: 4px; background: #111827;
-    border: 2px solid var(--border); overflow: hidden; position: relative;
+  .overlay-bottom {
+    position: absolute; bottom: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; align-items: flex-end; z-index: 2;
   }
-  .equip-slot img { width: 100%; height: 100%; object-fit: contain; }
+  .stat-level { font-size: 14px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+  .stat-power { font-size: 16px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+  .card-content { padding: 12px; z-index: 3; position: relative; }
+  .card-name { font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Cuadrícula de items 4x2 */
+  .equip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; justify-items: center; margin-bottom: 4px; }
+  .equip-slot { width: 34px; height: 34px; border-radius: 6px; background: #1a2233; border: 1.5px solid var(--border); position: relative; }
+  .equip-slot img { width: 100%; height: 100%; object-fit: contain; border-radius: 4px; }
   .equip-slot.g1 { border-color: var(--g1); }
   .equip-slot.g2 { border-color: var(--g2); }
   .equip-slot.g3 { border-color: var(--g3); }
   .equip-slot.g4 { border-color: var(--g4); }
   .equip-slot.g5 { border-color: var(--g5); }
-  /* Se eliminó el border-color forzado para que el marco herede el color del grado (.g1, .g2, etc) */
-  .equip-slot.trade {
-    /* Opcional: dejamos un brillo sutil cyan para resaltar que es tradeable, si no lo quieres, puedes borrar el box-shadow */
-    box-shadow: 0 0 6px rgba(6,182,212,0.4);
-  }
+  
+  /* Arreglo para que el item trade conserve el color de su grado */
+  .equip-slot.trade { box-shadow: 0 0 6px rgba(6,182,212,0.4); }
   .equip-slot.trade::after {
-    content: 'T';
-    position: absolute; top: -1px; right: -1px;
-    width: 12px; height: 12px; border-radius: 0 3px 0 4px;
+    content: 'T'; position: absolute; top: -1px; right: -1px;
+    width: 12px; height: 12px; border-radius: 0 5px 0 4px;
     background: var(--accent-cyan); color: #07090e;
     font-size: 9px; font-weight: 800; line-height: 12px; text-align: center;
   }
 
-  .card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
-  .card-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .card-stats { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-  .card-stats strong { color: var(--text-main); }
-  .card-server { font-size: 11px; color: var(--text-muted); }
-
-  .card-footer { padding: 8px 12px 12px; border-top: 1px solid var(--border); margin-top: auto; }
-  .price-wemix { font-size: 15px; font-weight: 700; color: var(--accent-gold); }
+  .card-footer {
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 12px; text-align: center; margin-top: auto;
+  }
+  .price-wemix { font-size: 16px; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .price-wemix::before {
+    content: 'W'; display: inline-block; width: 18px; height: 18px;
+    background: #fff; color: #000; border-radius: 50%; font-size: 11px;
+    line-height: 18px; font-weight: 900;
+  }
+  /* --- FIN ESTILO ANALYSIS4NFT --- */
 
   .empty-state, .loading-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 14px; }
   .error-state { color: var(--accent-red); }
@@ -247,9 +279,16 @@
       </div>
     </div>
     <div class="range-group">
-      <span>Solo con items Trade</span>
+      <span>Items Trade (Grado)</span>
       <div class="inputs">
-        <select id="onlyTrade"><option value="">Todos</option><option value="1">Si</option></select>
+        <select id="tradeGrade">
+          <option value="">Todos</option>
+          <option value="any">Cualquier Grado</option>
+          <option value="2">Grado 2+ (Verde)</option>
+          <option value="3">Grado 3+ (Azul)</option>
+          <option value="4">Grado 4+ (Épico)</option>
+          <option value="5">Grado 5 (Legendario)</option>
+        </select>
       </div>
     </div>
     <button class="apply-btn" onclick="aplicarFiltros()">Aplicar</button>
@@ -310,7 +349,7 @@ function aplicarFiltros() {
   const priceMax = parseFloat(document.getElementById('priceMax').value) || null;
   const lvlMin = parseFloat(document.getElementById('lvlMin').value) || null;
   const lvlMax = parseFloat(document.getElementById('lvlMax').value) || null;
-  const onlyTrade = document.getElementById('onlyTrade').value;
+  const tradeGrade = document.getElementById('tradeGrade') ? document.getElementById('tradeGrade').value : '';
 
   FILTRADOS = TODOS.filter(n => {
     const texto = (n.name + " " + n.class + " " + n.server).toLowerCase();
@@ -323,7 +362,16 @@ function aplicarFiltros() {
     if (priceMax !== null && (n.price_wemix || 0) > priceMax) return false;
     if (lvlMin !== null && (n.level || 0) < lvlMin) return false;
     if (lvlMax !== null && (n.level || 0) > lvlMax) return false;
-    if (onlyTrade === '1' && !(n.tradable_item_count > 0)) return false;
+    
+    // Lógica para filtrar items Trade por grado
+    if (tradeGrade === 'any' && !(n.tradable_item_count > 0)) return false;
+    if (tradeGrade !== '' && tradeGrade !== 'any') {
+      const minGrade = parseInt(tradeGrade);
+      // Verifica si el personaje tiene equipo y si alguno de esos equipos es tradeable y cumple con el grado mínimo
+      const tieneTradeGrado = n.equipment && n.equipment.some(e => e.tradeable && e.grade >= minGrade);
+      if (!tieneTradeGrado) return false;
+    }
+    
     return true;
   });
 
@@ -351,12 +399,11 @@ function renderizarPagina() {
   grid.innerHTML = lote.map(function(nft) {
     const grade = nft.grade || 0;
     const tradeCount = nft.tradable_item_count || 0;
-    const tradeTag = tradeCount > 0 ? ('<span class="tag-trade">' + tradeCount + ' Trade</span>') : '';
 
     const equipo = nft.equipment || [];
     let equipStrip = '';
     if (equipo.length) {
-      equipStrip = '<div class="equip-strip">' + equipo.map(function(e) {
+      equipStrip = '<div class="equip-grid">' + equipo.map(function(e) {
         const cls = 'equip-slot g' + (e.grade || 0) + (e.tradeable ? ' trade' : '');
         const title = e.name + (e.tradeable ? ' (Trade)' : '');
         return '<div class="' + cls + '" title="' + title + '"><img src="' + e.icon + '" alt="' + e.name + '" loading="lazy" onerror="this.style.opacity=0"></div>';
@@ -365,18 +412,27 @@ function renderizarPagina() {
 
     return '' +
       '<a class="card grade-' + grade + '" href="' + nft.url + '" target="_blank" rel="noopener">' +
-        '<div class="card-img">' +
-          '<span class="tag-class">' + (nft.class || 'N/A') + '</span>' +
-          tradeTag +
+        '<div class="card-img-wrap">' +
           '<img src="' + nft.image + '" alt="' + nft.name + '" loading="lazy" onerror="this.src=\'https://www.xdraco.com/nft/assets/img/common/thumb-default.png\'">' +
+          '<div class="overlay-top">' +
+            '<span class="badge badge-server">' + (nft.server || '') + '</span>' +
+            '<div>' +
+              '<span class="badge badge-class">' + (nft.class || 'N/A') + '</span>' +
+              (tradeCount > 0 ? '<span class="badge badge-trade">' + tradeCount + ' Trade</span>' : '') +
+            '</div>' +
+          '</div>' +
+          '<div class="overlay-bottom">' +
+            '<span class="stat-level">Lv. ' + (nft.level ?? '-') + '</span>' +
+            '<span class="stat-power">PS ' + (nft.power || 0).toLocaleString() + '</span>' +
+          '</div>' +
         '</div>' +
-        equipStrip +
-        '<div class="card-body">' +
-          '<div class="card-title" title="' + nft.name + '">' + nft.name + '</div>' +
-          '<div class="card-stats"><span>Lv. <strong>' + (nft.level ?? '-') + '</strong></span><span>PS: <strong>' + (nft.power || 0).toLocaleString() + '</strong></span></div>' +
-          '<div class="card-server">' + (nft.server || '') + '</div>' +
+        '<div class="card-content">' +
+          '<div class="card-name" title="' + nft.name + '">' + nft.name + '</div>' +
+          equipStrip +
         '</div>' +
-        '<div class="card-footer"><div class="price-wemix">' + (nft.price_wemix ?? 0).toLocaleString() + ' WEMIX</div></div>' +
+        '<div class="card-footer">' +
+          '<div class="price-wemix">' + (nft.price_wemix ?? 0).toLocaleString() + '</div>' +
+        '</div>' +
       '</a>';
   }).join('');
 
